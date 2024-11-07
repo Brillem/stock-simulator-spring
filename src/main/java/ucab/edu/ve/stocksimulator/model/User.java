@@ -15,8 +15,10 @@ public class User {
     private String lastName;
     @Column(nullable = false, updatable = false)
     private String username;
+    private String email;
     private Boolean verified;
     private String hashedPassword;
+
 
     public Long getId() {
         return id;
@@ -34,6 +36,10 @@ public class User {
         return username;
     }
 
+    public String getEmail() {
+        return email;
+    }
+
     public Boolean getVerified() {
         return verified;
     }
@@ -42,9 +48,6 @@ public class User {
         return hashedPassword;
     }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
 
     public void setFirstName(String firstName) {
         this.firstName = firstName;
@@ -58,24 +61,16 @@ public class User {
         this.username = username;
     }
 
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
     public void setVerified(Boolean verified) {
         this.verified = verified;
     }
 
     public void setHashedPassword(String hashedPassword) {
         this.hashedPassword = hashedPassword;
-    }
-
-    @Override
-    public String toString() {
-        return "User{" +
-                "id=" + id +
-                ", firstName='" + firstName + '\'' +
-                ", lastName='" + lastName + '\'' +
-                ", username='" + username + '\'' +
-                ", verified=" + verified +
-                ", hashedPassword='" + hashedPassword + '\'' +
-                '}';
     }
 }
 
