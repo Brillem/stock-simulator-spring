@@ -1,6 +1,13 @@
 package ucab.edu.ve.stocksimulator.model;
 
+
+import jakarta.persistence.*;
+
+@Entity
 public class Stock {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private double id;
     private String ticker;
     private String name;
     private double close;
@@ -8,8 +15,13 @@ public class Stock {
     private double low;
     private double open;
     private String exchangeCode;
+    private double growth_pct;
 
-    public Stock(String ticker, String name, double close, double high, double low, double open, String exchangeCode) {
+    public Stock() {
+    }
+
+    public Stock(double id, String ticker, String name, double close, double high, double low, double open, String exchangeCode, double growth_pct) {
+        this.id = id;
         this.ticker = ticker;
         this.name = name;
         this.close = close;
@@ -17,6 +29,15 @@ public class Stock {
         this.low = low;
         this.open = open;
         this.exchangeCode = exchangeCode;
+        this.growth_pct = growth_pct;
+    }
+
+    public double getId() {
+        return id;
+    }
+
+    public void setId(double id) {
+        this.id = id;
     }
 
     public String getTicker() {
@@ -73,5 +94,13 @@ public class Stock {
 
     public void setExchangeCode(String exchangeCode) {
         this.exchangeCode = exchangeCode;
+    }
+
+    public double getGrowth_pct() {
+        return growth_pct;
+    }
+
+    public void setGrowth_pct(double growth_pct) {
+        this.growth_pct = growth_pct;
     }
 }
