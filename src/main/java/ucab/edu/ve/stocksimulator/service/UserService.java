@@ -4,6 +4,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import ucab.edu.ve.stocksimulator.dto.request.UserRequestDTO;
+import ucab.edu.ve.stocksimulator.dto.response.UserResponseDTO;
 import ucab.edu.ve.stocksimulator.model.User;
 import ucab.edu.ve.stocksimulator.repository.UserRepo;
 import util.PasswordUtil;
@@ -40,5 +41,15 @@ public class UserService {
         user.setHashedPassword(PasswordUtil.encodePassword(userRequestDTO.getPassword()));
         user.setVerified(true);
         return user;
+    }
+
+    public UserResponseDTO mapUserToUserResponseDTO(User user) {
+        UserResponseDTO userResponseDTO = new UserResponseDTO();
+        userResponseDTO.setFirstName(user.getFirstName());
+        userResponseDTO.setLastName(user.getLastName());
+        userResponseDTO.setUsername(user.getUsername());
+        userResponseDTO.setEmail(user.getEmail());
+        userResponseDTO.setVerified(user.getVerified());
+        return userResponseDTO;
     }
 }
