@@ -6,7 +6,11 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.ResponseBody;
+import ucab.edu.ve.stocksimulator.dto.StockEOD;
 import ucab.edu.ve.stocksimulator.dto.StockListResponseDTO;
+import ucab.edu.ve.stocksimulator.service.StockEODService;
 import ucab.edu.ve.stocksimulator.service.StockService;
 
 
@@ -14,16 +18,26 @@ import ucab.edu.ve.stocksimulator.service.StockService;
 @Controller
 public class StockController {
     public StockService stockservice;
+    public StockEODService stockEODService;
 
     @Autowired
     public StockController(StockService stockservice) {
         this.stockservice = stockservice;
     }
+    public StockController(StockEODService stockEODService) { this.stockEODService = stockEODService; }
 
-    @GetMapping("/stocks")
+    @GetMapping("/stocks/all")
     public ResponseEntity<StockListResponseDTO> getAvailableStocks() {
         StockListResponseDTO responseStockDTO = new StockListResponseDTO();
         responseStockDTO = stockservice.findAll();
         return ResponseEntity.status(HttpStatus.OK).body(responseStockDTO);
     }
+    @GetMapping("/stocks/{ticker}")
+    public ResponseEntity<StockEOD>getLatestStockEODData(@PathVariable String ticker){
+        StockEOD response = stockEODService.getLatestStockEODData(ticker);
+        return ResponseEntity.status(HttpStatus.OK).body(response);
+    }
+
+
+
 }
