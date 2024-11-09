@@ -11,10 +11,14 @@ import java.util.List;
 public class StockEODService {
     private final String API_KEY =  "f187e17dd5f064487da0add13fddda26d53fbe3b";
 
-    public StockEOD getLatestStockEODData(String ticker){
-        String url = "https://api.tiingo.com/tiingo/daily/aapl/prices?token=" + API_KEY;
+    public Object getLatestStockEODData(String ticker){
+        String url = "https://api.tiingo.com/tiingo/daily/"+ticker+"/prices?token=" + API_KEY;
         RestTemplate restTemplate = new RestTemplate();
-        StockEOD response = restTemplate.getForObject(url, StockEOD.class);
-        return response;
+        try {
+            Object[] response = restTemplate.getForObject(url, Object[].class);
+            return response[0];
+        }catch(Exception NullPointerException){
+            return null;
+        }
     }
 }

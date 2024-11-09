@@ -21,10 +21,10 @@ public class StockController {
     public StockEODService stockEODService;
 
     @Autowired
-    public StockController(StockService stockservice) {
+    public StockController(StockService stockservice, StockEODService stockEODService) {
         this.stockservice = stockservice;
+        this.stockEODService = stockEODService;
     }
-    public StockController(StockEODService stockEODService) { this.stockEODService = stockEODService; }
 
     @GetMapping("/stocks/all")
     public ResponseEntity<StockListResponseDTO> getAvailableStocks() {
@@ -33,8 +33,8 @@ public class StockController {
         return ResponseEntity.status(HttpStatus.OK).body(responseStockDTO);
     }
     @GetMapping("/stocks/{ticker}")
-    public ResponseEntity<StockEOD>getLatestStockEODData(@PathVariable String ticker){
-        StockEOD response = stockEODService.getLatestStockEODData(ticker);
+    public ResponseEntity<Object>getLatestStockEODData(@PathVariable String ticker){
+        Object response = stockEODService.getLatestStockEODData(ticker);
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 
