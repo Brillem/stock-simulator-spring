@@ -29,7 +29,7 @@ public class StockEODService {
         LocalDate startDate = endDate.minusMonths(1);
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-M-d");
 
-        String url = "https://api.tiingo.com/tiingo/daily/" + ticker + "/prices?startDate=" + startDate.format(formatter) + "&endDate=" + endDate.format(formatter) + "token=" + API_KEY;
+        String url = "https://api.tiingo.com/tiingo/daily/" + ticker + "/prices?startDate=" + startDate.format(formatter) + "&endDate=" + endDate.format(formatter) + "&token=" + API_KEY;
 
         RestTemplate restTemplate = new RestTemplate();
         try {
