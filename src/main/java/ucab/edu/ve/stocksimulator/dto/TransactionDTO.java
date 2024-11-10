@@ -1,15 +1,15 @@
-package ucab.edu.ve.stocksimulator.dto.transaction;
+package ucab.edu.ve.stocksimulator.dto;
 
 import java.util.Date;
 
 public class TransactionDTO {
-    private String nameStock;
-    private String type;
-    private Long emisorID;
-    private Long compradorID;
-    private Float valor;
-    private int cantidad;
-    private Date fecha;
+    public String nameStock;
+    public String type;
+    public Long emisorID;
+    public Long receptorID;
+    public Float valor;
+    public int cantidad;
+    public Date fecha;
 
     public String getNameStock() {
         return nameStock;
@@ -35,12 +35,12 @@ public class TransactionDTO {
         this.emisorID = emisorID;
     }
 
-    public Long getCompradorID() {
-        return compradorID;
+    public Long getReceptorID() {
+        return receptorID;
     }
 
-    public void setCompradorID(Long compradorID) {
-        this.compradorID = compradorID;
+    public void setReceptorID(Long receptorID) {
+        this.receptorID = receptorID;
     }
 
     public Float getValor() {

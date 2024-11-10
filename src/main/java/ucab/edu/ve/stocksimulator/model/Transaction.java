@@ -1,27 +1,30 @@
 package ucab.edu.ve.stocksimulator.model;
 
 import jakarta.persistence.*;
-
 import java.util.Date;
+
+@Entity
+@Table(name = "transactions")
 
 public class Transaction {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(unique = true, nullable = false, updatable = false)
     private Long id;
     private String nameStock; //nombre de la accion
     private String type; // (venta, compra y transferencia) lo dejo como string mientras tanto
     private Long emisorID; //market o usario
-    private Long compradorID; //market o usuario
+    private Long receptorID; //market o usuario
     private Float valor; //valor de la accion en la transferencia
     private int cantidad; //cantidad de acciones en la transferencia
     private Date fecha; //fecha de la transaccion
 
-    public Transaction(Long id, String nameStock, String type, Long emisorID, Long compradorID, Float valor, int cantidad, Date fecha) {
+    public Transaction(Long id, String nameStock, String type, Long emisorID, Long receptorID, Float valor, int cantidad, Date fecha) {
         this.id = id;
         this.nameStock = nameStock;
         this.type = type;
         this.emisorID = emisorID;
-        this.compradorID = compradorID;
+        this.receptorID = receptorID;
         this.valor = valor;
         this.cantidad = cantidad;
         this.fecha = fecha;
@@ -59,12 +62,12 @@ public class Transaction {
         this.emisorID = emisorID;
     }
 
-    public Long getCompradorID() {
-        return compradorID;
+    public Long getReceptorID() {
+        return receptorID;
     }
 
-    public void setCompradorID(Long compradorID) {
-        this.compradorID = compradorID;
+    public void setReceptorID(Long receptorID) {
+        this.receptorID = receptorID;
     }
 
     public Float getValor() {
