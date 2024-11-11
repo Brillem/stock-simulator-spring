@@ -11,7 +11,7 @@ public class Stock{
     private Long id;
     private String ticker;
     private String name;
-    private String Description;
+    private String description;
     public Stock() {
     }
 
