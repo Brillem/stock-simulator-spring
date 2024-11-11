@@ -13,7 +13,11 @@ public class Transaction {
     private Long id;
     private String nameStock; //nombre de la accion
     private String type; // (venta, compra y transferencia) lo dejo como string mientras tanto
+    @ManyToOne
+    @JoinColumn(name = "stockUser_id", nullable = false)
     private Long emisorID; //market o usario
+    @ManyToOne
+    @JoinColumn(name = "stockUser_id", nullable = true)
     private Long receptorID; //market o usuario
     private Float valor; //valor de la accion en la transferencia
     private int cantidad; //cantidad de acciones en la transferencia
