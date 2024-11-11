@@ -5,4 +5,5 @@ import ucab.edu.ve.stocksimulator.model.User;
 
 public interface UserRepo extends JpaRepository<User, Long> {
     User findByUsername(String username);
+    boolean existsByUsername(String username);
 }

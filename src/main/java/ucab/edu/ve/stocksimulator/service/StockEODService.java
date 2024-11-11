@@ -18,13 +18,14 @@ public class StockEODService {
         RestTemplate restTemplate = new RestTemplate();
         try {
             Object[] response = restTemplate.getForObject(url, Object[].class);
+            assert response != null;
             return response[0];
         }catch(Exception NullPointerException){
             return null;
         }
     }
 
-    public Object getLastMonthStockEODData(String ticker) {
+    public Object[] getLastMonthStockEODData(String ticker) {
         LocalDate endDate = LocalDate.now().minusDays(1);
         LocalDate startDate = endDate.minusMonths(1);
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-M-d");
@@ -33,8 +34,7 @@ public class StockEODService {
 
         RestTemplate restTemplate = new RestTemplate();
         try {
-            Object[] response = restTemplate.getForObject(url, Object[].class);
-            return response;
+            return restTemplate.getForObject(url, Object[].class);
         } catch (Exception e) {
             return null;
         }
