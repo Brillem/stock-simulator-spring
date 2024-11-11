@@ -2,7 +2,7 @@ package ucab.edu.ve.stocksimulator.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ucab.edu.ve.stocksimulator.dto.StockDTO;
-import ucab.edu.ve.stocksimulator.dto.StockListResponseDTO;
+import ucab.edu.ve.stocksimulator.dto.response.StockListResponseDTO;
 import ucab.edu.ve.stocksimulator.model.Stock;
 import ucab.edu.ve.stocksimulator.repository.StockRepo;
 
@@ -54,10 +54,10 @@ public class StockService {
         StockListResponseDTO stockListResponseDTO = new StockListResponseDTO();
         stockListResponseDTO.stockDTOList = stockDTOList;
         if(stockDTOList.isEmpty()){
-            stockListResponseDTO.codeMessage = 1;
+            stockListResponseDTO.code = 1;
             return stockListResponseDTO;
         }
-        stockListResponseDTO.codeMessage = 0;
+        stockListResponseDTO.code = 0;
         return stockListResponseDTO;
     }
 
