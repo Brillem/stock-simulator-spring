@@ -19,7 +19,7 @@ public class Stock{
         this.id = id;
         this.ticker = ticker;
         this.name = name;
-        Description = description;
+        this.description = description;
     }
 
     public Long getId() {
@@ -47,10 +47,10 @@ public class Stock{
     }
 
     public String getDescription() {
-        return Description;
+        return description;
     }
 
     public void setDescription(String description) {
-        Description = description;
+        this.description = description;
     }
 }

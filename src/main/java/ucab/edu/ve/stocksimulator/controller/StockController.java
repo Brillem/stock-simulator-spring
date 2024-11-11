@@ -38,9 +38,9 @@ public class StockController {
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }
     @GetMapping("/stocks/{ticker}/month")
-    public ResponseEntity<Object>getLastMonthStockEODData(@PathVariable String ticker){
+    public ResponseEntity<Object>getLastMonthStockEODData(@PathVariable String ticker) {
         Object response = stockEODService.getLastMonthStockEODData(ticker);
         return ResponseEntity.status(HttpStatus.OK).body(response);
 
-
+    }
 }
