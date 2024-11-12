@@ -1,27 +1,37 @@
 package ucab.edu.ve.stocksimulator.model;
 
 import jakarta.persistence.*;
-
 import java.util.Date;
+
+@Entity
+@Table(name = "transactions")
 
 public class Transaction {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(unique = true, nullable = false, updatable = false)
     private Long id;
     private String nameStock; //nombre de la accion
     private String type; // (venta, compra y transferencia) lo dejo como string mientras tanto
-    private Long emisorID; //market o usario
-    private Long compradorID; //market o usuario
+    @ManyToOne
+    @JoinColumn(name = "stockUser_id", nullable = false)
+    private User emisorID; //market o usario
+    @ManyToOne
+    @JoinColumn(name = "stockUser_id", nullable = true)
+    private User receptorID; //market o usuario
     private Float valor; //valor de la accion en la transferencia
     private int cantidad; //cantidad de acciones en la transferencia
     private Date fecha; //fecha de la transaccion
 
-    public Transaction(Long id, String nameStock, String type, Long emisorID, Long compradorID, Float valor, int cantidad, Date fecha) {
+    public Transaction() {
+    }
+
+    public Transaction(Long id, String nameStock, String type,User emisorID, User receptorID, Float valor, int cantidad, Date fecha) {
         this.id = id;
         this.nameStock = nameStock;
         this.type = type;
         this.emisorID = emisorID;
-        this.compradorID = compradorID;
+        this.receptorID = receptorID;
         this.valor = valor;
         this.cantidad = cantidad;
         this.fecha = fecha;
@@ -51,20 +61,8 @@ public class Transaction {
         this.type = type;
     }
 
-    public Long getEmisorID() {
-        return emisorID;
-    }
-
-    public void setEmisorID(Long emisorID) {
-        this.emisorID = emisorID;
-    }
-
-    public Long getCompradorID() {
-        return compradorID;
-    }
-
-    public void setCompradorID(Long compradorID) {
-        this.compradorID = compradorID;
+    public void setReceptorID(User receptorID) {
+        this.receptorID = receptorID;
     }
 
     public Float getValor() {
@@ -89,5 +87,17 @@ public class Transaction {
 
     public void setFecha(Date fecha) {
         this.fecha = fecha;
+    }
+
+    public User getEmisorID() {
+        return emisorID;
+    }
+
+    public void setEmisorID(User emisorID) {
+        this.emisorID = emisorID;
+    }
+
+    public User getReceptorID() {
+        return receptorID;
     }
 }

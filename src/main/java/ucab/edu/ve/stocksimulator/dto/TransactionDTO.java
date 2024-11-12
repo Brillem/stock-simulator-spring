@@ -1,22 +1,54 @@
-package ucab.edu.ve.stocksimulator.dto.transaction;
+package ucab.edu.ve.stocksimulator.dto;
 
 import java.util.Date;
 
 public class TransactionDTO {
-    private String nameStock;
-    private String type;
-    private Long emisorID;
-    private Long compradorID;
-    private Float valor;
-    private int cantidad;
-    private Date fecha;
+    public String stockTicker;
+    public String type;
+    public String emisorUsername;
+    public String receptorUsername;
+    public Float price;
+    public int amount;
+    public Date date;
 
-    public String getNameStock() {
-        return nameStock;
+    public Date getDate() {
+        return date;
     }
 
-    public void setNameStock(String nameStock) {
-        this.nameStock = nameStock;
+    public void setDate(Date date) {
+        this.date = date;
+    }
+
+    public int getAmount() {
+        return amount;
+    }
+
+    public void setAmount(int amount) {
+        this.amount = amount;
+    }
+
+    public Float getPrice() {
+        return price;
+    }
+
+    public void setPrice(Float price) {
+        this.price = price;
+    }
+
+    public String getEmisorUsername() {
+        return emisorUsername;
+    }
+
+    public void setEmisorUsername(String emisorUsername) {
+        this.emisorUsername = emisorUsername;
+    }
+
+    public String getReceptorUsername() {
+        return receptorUsername;
+    }
+
+    public void setReceptorUsername(String receptorUsername) {
+        this.receptorUsername = receptorUsername;
     }
 
     public String getType() {
@@ -27,43 +59,11 @@ public class TransactionDTO {
         this.type = type;
     }
 
-    public Long getEmisorID() {
-        return emisorID;
+    public String getStockTicker() {
+        return stockTicker;
     }
 
-    public void setEmisorID(Long emisorID) {
-        this.emisorID = emisorID;
-    }
-
-    public Long getCompradorID() {
-        return compradorID;
-    }
-
-    public void setCompradorID(Long compradorID) {
-        this.compradorID = compradorID;
-    }
-
-    public Float getValor() {
-        return valor;
-    }
-
-    public void setValor(Float valor) {
-        this.valor = valor;
-    }
-
-    public int getCantidad() {
-        return cantidad;
-    }
-
-    public void setCantidad(int cantidad) {
-        this.cantidad = cantidad;
-    }
-
-    public Date getFecha() {
-        return fecha;
-    }
-
-    public void setFecha(Date fecha) {
-        this.fecha = fecha;
+    public void setStockTicker(String stockTicker) {
+        this.stockTicker = stockTicker;
     }
 }
