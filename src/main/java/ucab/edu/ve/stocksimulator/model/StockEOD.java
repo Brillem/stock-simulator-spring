@@ -1,4 +1,4 @@
-package ucab.edu.ve.stocksimulator.dto;
+package ucab.edu.ve.stocksimulator.model;
 
 public class StockEOD {
     public String date;
