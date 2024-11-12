@@ -43,13 +43,6 @@ public class TransactionDTO {
         this.emisorUsername = emisorUsername;
     }
 
-    public String getReceptorUsername() {
-        return receptorUsername;
-    }
-
-    public void setReceptorUsername(String receptorUsername) {
-        this.receptorUsername = receptorUsername;
-    }
 
     public String getType() {
         return type;

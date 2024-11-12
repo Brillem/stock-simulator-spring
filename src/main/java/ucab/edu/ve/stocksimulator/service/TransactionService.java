@@ -13,6 +13,9 @@ import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
+import java.util.Date;
+import java.util.Optional;
+
 @Service
 public class TransactionService {
     private final TransactionRepo transactionRepo;
@@ -41,8 +44,8 @@ public class TransactionService {
         transactionDTO.stockTicker = transaction.getNameStock();
         transactionDTO.type = transaction.getType();
         transactionDTO.emisorUsername= transaction.getEmisorID().getUsername();
-        if(transaction.getReceptorID()!= null){
-            transactionDTO.receptorUsername= transaction.getReceptorID().getUsername();
+        if(transaction.getCompradorID()!= null){
+            transactionDTO.receptorUsername= transaction.getCompradorID().getUsername();
         }else{
             transactionDTO.receptorUsername= null;
         }

@@ -1,6 +1,7 @@
 package ucab.edu.ve.stocksimulator.model;
 
 import jakarta.persistence.*;
+
 import java.util.Date;
 
 @Entity
@@ -18,7 +19,7 @@ public class Transaction {
     private User emisorID; //market o usario
     @ManyToOne
     @JoinColumn(name = "stockUser_id", nullable = true)
-    private User receptorID; //market o usuario
+    private User compradorID; //market o usuario
     private Float valor; //valor de la accion en la transferencia
     private int cantidad; //cantidad de acciones en la transferencia
     private Date fecha; //fecha de la transaccion
@@ -26,12 +27,12 @@ public class Transaction {
     public Transaction() {
     }
 
-    public Transaction(Long id, String nameStock, String type,User emisorID, User receptorID, Float valor, int cantidad, Date fecha) {
+    public Transaction(Long id, String nameStock, String type, User emisorID, User compradorID, Float valor, int cantidad, Date fecha) {
         this.id = id;
         this.nameStock = nameStock;
         this.type = type;
         this.emisorID = emisorID;
-        this.receptorID = receptorID;
+        this.compradorID = compradorID;
         this.valor = valor;
         this.cantidad = cantidad;
         this.fecha = fecha;
@@ -61,9 +62,6 @@ public class Transaction {
         this.type = type;
     }
 
-    public void setReceptorID(User receptorID) {
-        this.receptorID = receptorID;
-    }
 
     public Float getValor() {
         return valor;
@@ -97,7 +95,11 @@ public class Transaction {
         this.emisorID = emisorID;
     }
 
-    public User getReceptorID() {
-        return receptorID;
+    public User getCompradorID() {
+        return compradorID;
+    }
+
+    public void setCompradorID(User compradorID) {
+        this.compradorID = compradorID;
     }
 }
