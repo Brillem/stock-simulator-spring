@@ -35,6 +35,12 @@ public class TransactionService {
         return mapListTransactionToDTO(transactions);
     }
 
+    public List<TransactionDTO> findAllTransfers(User user){
+        List<Transaction> transactions = transactionRepo.findAllByEmisorIDAndType(user, "transfer");
+        transactions.addAll(transactionRepo.findAllByReceptorIDAAndType(user, "transfer"));
+        return mapListTransactionToDTO(transactions);
+    }
+
     public Optional<Transaction> findStockById(Long id){
         return transactionRepo.findById(id);
     }
