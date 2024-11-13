@@ -31,6 +31,10 @@ public class StockService {
         return stockRepo.findById(id);
     }
 
+    public void save(Stock stock){
+        stockRepo.save(stock);
+    }
+
     public List<StockDTO> mapStockListToStockDTOList(List<Stock> stockList){
         List<StockDTO> stockDTOList = new ArrayList<StockDTO>();
         if(stockList.isEmpty()){

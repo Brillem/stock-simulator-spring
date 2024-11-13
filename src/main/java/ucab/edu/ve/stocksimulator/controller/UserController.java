@@ -24,7 +24,7 @@ public class UserController {
     }
 
     @PostMapping(value= "/register", produces = "application/json")
-    public ResponseEntity<MessageResponseDTO> registerUser(@RequestBody UserRequestDTO user) {
+    public ResponseEntity<Object> registerUser(@RequestBody UserRequestDTO user) {
         System.out.println(user.getFirstName() + " " + user.getLastName());
         if (userService.userExistsByUsername(user.getUsername())) {
             System.out.println("existo");
@@ -33,8 +33,8 @@ public class UserController {
         } else {
             User createdUser = userService.mapUserRequestDTOToUser(user);
             userService.createUser(createdUser);
-            MessageResponseDTO message = new MessageResponseDTO(0, "User created successfully");
-            return ResponseEntity.status(HttpStatus.OK).body(message);
+            UserResponseDTO userResponse = userService.mapUserToUserResponseDTO(createdUser);
+            return ResponseEntity.status(HttpStatus.OK).body(userResponse);
         }
     }
 
