@@ -2,6 +2,7 @@ package ucab.edu.ve.stocksimulator.model;
 
 import jakarta.persistence.*;
 
+import java.time.LocalDate;
 import java.util.Date;
 
 @Entity
@@ -12,30 +13,31 @@ public class Transaction {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(unique = true, nullable = false, updatable = false)
     private Long id;
-    private String nameStock; //nombre de la accion
-    private String type; // (venta, compra y transferencia) lo dejo como string mientras tanto
+    private String nameStock;
+    private String ticker;
+    private String type;
     @ManyToOne
-    @JoinColumn(name = "stockUser_id", nullable = false)
-    private User emisorID; //market o usario
+    @JoinColumn(name = "issuer_id", nullable = false)
+    private User issuer;
     @ManyToOne
-    @JoinColumn(name = "stockUser_id", nullable = true)
-    private User compradorID; //market o usuario
-    private Float valor; //valor de la accion en la transferencia
-    private int cantidad; //cantidad de acciones en la transferencia
-    private Date fecha; //fecha de la transaccion
+    @JoinColumn(name = "receptor_id", nullable = true)
+    private User receptor;
+    private Float amount;
+    private int quantity;
+    private LocalDate date;
 
     public Transaction() {
     }
 
-    public Transaction(Long id, String nameStock, String type, User emisorID, User compradorID, Float valor, int cantidad, Date fecha) {
+    public Transaction(Long id, String nameStock, String type, User issuer, User receptor, Float amount, int quantity, LocalDate date) {
         this.id = id;
         this.nameStock = nameStock;
         this.type = type;
-        this.emisorID = emisorID;
-        this.compradorID = compradorID;
-        this.valor = valor;
-        this.cantidad = cantidad;
-        this.fecha = fecha;
+        this.issuer = issuer;
+        this.receptor = receptor;
+        this.amount = amount;
+        this.quantity = quantity;
+        this.date = date;
     }
 
     public Long getId() {
@@ -54,6 +56,14 @@ public class Transaction {
         this.nameStock = nameStock;
     }
 
+    public String getTicker() {
+        return ticker;
+    }
+
+    public void setTicker(String ticker) {
+        this.ticker = ticker;
+    }
+
     public String getType() {
         return type;
     }
@@ -62,44 +72,43 @@ public class Transaction {
         this.type = type;
     }
 
-
-    public Float getValor() {
-        return valor;
+    public User getIssuer() {
+        return issuer;
     }
 
-    public void setValor(Float valor) {
-        this.valor = valor;
+    public void setIssuer(User issuer) {
+        this.issuer = issuer;
     }
 
-    public int getCantidad() {
-        return cantidad;
+    public User getReceptor() {
+        return receptor;
     }
 
-    public void setCantidad(int cantidad) {
-        this.cantidad = cantidad;
+    public void setReceptor(User receptor) {
+        this.receptor = receptor;
     }
 
-    public Date getFecha() {
-        return fecha;
+    public Float getAmount() {
+        return amount;
     }
 
-    public void setFecha(Date fecha) {
-        this.fecha = fecha;
+    public void setAmount(Float amount) {
+        this.amount = amount;
     }
 
-    public User getEmisorID() {
-        return emisorID;
+    public int getQuantity() {
+        return quantity;
     }
 
-    public void setEmisorID(User emisorID) {
-        this.emisorID = emisorID;
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
     }
 
-    public User getCompradorID() {
-        return compradorID;
+    public LocalDate getDate() {
+        return date;
     }
 
-    public void setCompradorID(User compradorID) {
-        this.compradorID = compradorID;
+    public void setDate(LocalDate date) {
+        this.date = date;
     }
 }
