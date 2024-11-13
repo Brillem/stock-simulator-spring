@@ -7,6 +7,8 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import ucab.edu.ve.stocksimulator.dto.TransactionDTO;
+import ucab.edu.ve.stocksimulator.dto.request.BuyRequestDTO;
+import ucab.edu.ve.stocksimulator.dto.request.SellRequestDTO;
 import ucab.edu.ve.stocksimulator.dto.response.MessageResponseDTO;
 import ucab.edu.ve.stocksimulator.model.Transaction;
 import ucab.edu.ve.stocksimulator.model.User;
@@ -40,16 +42,38 @@ public class TransactionController {
         return ResponseEntity.status(HttpStatus.OK).body(responseTransactionDTOS);
     }
 
-    @PostMapping(value = "/buy")
-    public ResponseEntity<MessageResponseDTO>buy(String username, String ticker, String name, int quantity, String cardNumber, float price) {
+    @GetMapping(value = "/verify-visa")
+    public ResponseEntity<MessageResponseDTO> verifyVisaCard(String cardNumber) {
         MessageResponseDTO messageResponseDTO = new MessageResponseDTO();
         if (!transactionService.verifyVISA(cardNumber)) {
             messageResponseDTO.setCode(1);
             messageResponseDTO.setMessage("INVALID CARD NUMBER");
             return ResponseEntity.status(HttpStatus.OK).body(messageResponseDTO);
+
         }
-        ownedStockService.addPurchase(username,ticker,quantity,name);
-        transactionService.registerPurchase(username,name,quantity,price);
+        else {
+            messageResponseDTO.setCode(0);
+            messageResponseDTO.setMessage("SUCCESS");
+            return ResponseEntity.status(HttpStatus.OK).body(messageResponseDTO);
+        }
+    }
+
+    @PostMapping(value = "/buy")
+    public ResponseEntity<MessageResponseDTO> buyStock(@RequestBody BuyRequestDTO buyRequestDTO) {
+        MessageResponseDTO messageResponseDTO = new MessageResponseDTO();
+        ownedStockService.addPurchase(buyRequestDTO);
+        transactionService.registerPurchase(buyRequestDTO);
+        messageResponseDTO.setCode(0);
+        messageResponseDTO.setMessage("Purchase completed successfully");
+        return ResponseEntity.status(HttpStatus.OK).body(messageResponseDTO);
+    }
+
+
+    @PostMapping(value = "/sell")
+    public ResponseEntity<MessageResponseDTO> sellStock(@RequestBody SellRequestDTO sellRequestDTO) {
+        MessageResponseDTO messageResponseDTO = new MessageResponseDTO();
+        ownedStockService.sellStock(sellRequestDTO);
+        transactionService.registerSell(sellRequestDTO);
         messageResponseDTO.setCode(0);
         messageResponseDTO.setMessage("Purchase completed successfully");
         return ResponseEntity.status(HttpStatus.OK).body(messageResponseDTO);

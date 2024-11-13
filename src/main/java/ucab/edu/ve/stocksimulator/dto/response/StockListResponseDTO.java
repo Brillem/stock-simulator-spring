@@ -8,7 +8,5 @@ public class StockListResponseDTO {
     public int code;
     public List<StockDTO> stockDTOList;
 
-    public StockListResponseDTO() {
-    }
 
 }

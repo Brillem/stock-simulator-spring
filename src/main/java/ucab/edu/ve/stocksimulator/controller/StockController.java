@@ -20,9 +20,9 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/stock")
 public class StockController {
-    private StockService stockservice;
-    private StockEODService stockEODService;
-    private OwnedStockService ownedStockService;
+    private  final StockService stockservice;
+    private final StockEODService stockEODService;
+    private final OwnedStockService ownedStockService;
 
     @Autowired
     public StockController(StockService stockservice, StockEODService stockEODService, OwnedStockService ownedStockService) {
@@ -34,7 +34,7 @@ public class StockController {
 
     @GetMapping("/all")
     public ResponseEntity<StockListResponseDTO> getAvailableStocks() {
-        StockListResponseDTO responseStockDTO = new StockListResponseDTO();
+        StockListResponseDTO responseStockDTO;
         responseStockDTO = stockservice.findAll();
         return ResponseEntity.status(HttpStatus.OK).body(responseStockDTO);
     }

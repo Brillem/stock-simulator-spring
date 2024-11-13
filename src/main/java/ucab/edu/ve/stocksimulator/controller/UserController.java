@@ -11,8 +11,6 @@ import ucab.edu.ve.stocksimulator.model.User;
 import ucab.edu.ve.stocksimulator.service.UserService;
 import util.PasswordUtil;
 
-import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/user")
@@ -27,7 +25,6 @@ public class UserController {
     public ResponseEntity<Object> registerUser(@RequestBody UserRequestDTO user) {
         System.out.println(user.getFirstName() + " " + user.getLastName());
         if (userService.userExistsByUsername(user.getUsername())) {
-            System.out.println("existo");
             MessageResponseDTO message = new MessageResponseDTO(1, "User already exists");
             return ResponseEntity.status(HttpStatus.OK).body(message);
         } else {

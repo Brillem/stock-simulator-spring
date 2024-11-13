@@ -3,6 +3,8 @@ package ucab.edu.ve.stocksimulator.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ucab.edu.ve.stocksimulator.dto.TransactionDTO;
+import ucab.edu.ve.stocksimulator.dto.request.BuyRequestDTO;
+import ucab.edu.ve.stocksimulator.dto.request.SellRequestDTO;
 import ucab.edu.ve.stocksimulator.model.Transaction;
 import ucab.edu.ve.stocksimulator.model.User;
 import ucab.edu.ve.stocksimulator.repository.TransactionRepo;
@@ -26,33 +28,46 @@ public class TransactionService {
 
     public List<TransactionDTO> findAllPurchase(String username){
         User user = userRepo.findByUsername(username);
-        List<Transaction> transactions = transactionRepo.findByEmisorIDAndType(user,"buy");
+        List<Transaction> transactions = transactionRepo.findAllByIssuerAndType(user,"buy");
         return mapListTransactionToDTO(transactions);
     }
 
     public List<TransactionDTO> findAllSales(String username){
         User user = userRepo.findByUsername(username);
-        List<Transaction> transactions = transactionRepo.findByEmisorIDAndType(user,"sell");
+        List<Transaction> transactions = transactionRepo.findAllByIssuerAndType(user,"sell");
         return mapListTransactionToDTO(transactions);
     }
 
-    public void registerPurchase(String username, String stockName,int quantity, float price){
-        User user = userRepo.findByUsername(username);
+    public void registerPurchase(BuyRequestDTO buyRequestDTO){
+        User user = userRepo.findByUsername(buyRequestDTO.username);
         Transaction transaction = new Transaction();
-        transaction.setEmisorID(user);
-        transaction.setCantidad(quantity);
-        transaction.setCompradorID(null);
-        transaction.setNameStock(stockName);
+        transaction.setIssuer(user);
+        transaction.setQuantity(buyRequestDTO.quantity);
+        transaction.setReceptor(null);
+        transaction.setNameStock(buyRequestDTO.name);
         transaction.setType("buy");
-        transaction.setValor(price);
-        transaction.setFecha(LocalDate.now());
+        transaction.setAmount(buyRequestDTO.amount);
+        transaction.setDate(LocalDate.now());
+        transactionRepo.save(transaction);
+    }
+
+    public void registerSell(SellRequestDTO sellRequestDTO){
+        User user = userRepo.findByUsername(sellRequestDTO.username);
+        Transaction transaction = new Transaction();
+        transaction.setIssuer(user);
+        transaction.setQuantity(sellRequestDTO.quantity);
+        transaction.setReceptor(null);
+        transaction.setNameStock(sellRequestDTO.name);
+        transaction.setType("sell");
+        transaction.setAmount(sellRequestDTO.amount);
+        transaction.setDate(LocalDate.now());
         transactionRepo.save(transaction);
     }
 
 
     public List<TransactionDTO> findAllTransfers(User user){
-        List<Transaction> transactions = transactionRepo.findByEmisorIDAndType(user, "transfer");
-        transactions.addAll(transactionRepo.findAllByCompradorIDAndType(user, "transfer"));
+        List<Transaction> transactions = transactionRepo.findAllByIssuerAndType(user, "transfer");
+        transactions.addAll(transactionRepo.findAllByReceptorAndType(user, "transfer"));
         return mapListTransactionToDTO(transactions);
     }
 
@@ -64,15 +79,15 @@ public class TransactionService {
         TransactionDTO transactionDTO = new TransactionDTO();
         transactionDTO.stockTicker = transaction.getNameStock();
         transactionDTO.type = transaction.getType();
-        transactionDTO.emisorUsername= transaction.getEmisorID().getUsername();
-        if(transaction.getCompradorID()!= null){
-            transactionDTO.receptorUsername= transaction.getCompradorID().getUsername();
+        transactionDTO.issuerUsername= transaction.getIssuer().getUsername();
+        if(transaction.getReceptor()!= null){
+            transactionDTO.receptorUsername= transaction.getReceptor().getUsername();
         }else{
             transactionDTO.receptorUsername= null;
         }
-        transactionDTO.price = transaction.getValor();
-        transactionDTO.amount = transaction.getCantidad();
-        transactionDTO.date = transaction.getFecha();
+        transactionDTO.amount = transaction.getAmount();
+        transactionDTO.quantity = transaction.getQuantity();
+        transactionDTO.date = transaction.getDate();
         return transactionDTO;
     }
 

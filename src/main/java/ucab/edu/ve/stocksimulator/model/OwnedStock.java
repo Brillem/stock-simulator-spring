@@ -6,13 +6,15 @@ import jakarta.persistence.*;
 public class OwnedStock {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(unique = true, nullable = false, updatable = false)
     private Long id;
+    @Column(unique=true)
     private String ticker;
     private String name;
     private int quantity;
 
     @ManyToOne
-    @JoinColumn(name = "user_id", nullable = false)
+    @JoinColumn(name = "stockuser_id", nullable = false)
     private User user;
 
     public OwnedStock() {

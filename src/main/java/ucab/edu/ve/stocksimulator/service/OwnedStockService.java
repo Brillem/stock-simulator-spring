@@ -3,6 +3,8 @@ package ucab.edu.ve.stocksimulator.service;
 import org.springframework.stereotype.Service;
 import ucab.edu.ve.stocksimulator.dto.OwnedStockDTO;
 import ucab.edu.ve.stocksimulator.dto.StockDTO;
+import ucab.edu.ve.stocksimulator.dto.request.BuyRequestDTO;
+import ucab.edu.ve.stocksimulator.dto.request.SellRequestDTO;
 import ucab.edu.ve.stocksimulator.model.OwnedStock;
 import ucab.edu.ve.stocksimulator.model.Stock;
 import ucab.edu.ve.stocksimulator.model.User;
@@ -27,26 +29,41 @@ public class OwnedStockService {
     }
 
 
-    public void addPurchase(String username, String ticker,int quantity,String name){
-        User user = userRepo.findByUsername(username);
-        List<OwnedStock> ownedstocks = getOwnedStocksByUserAndTicker(user,ticker);
-        if(ownedstocks.isEmpty()){
+    public void addPurchase(BuyRequestDTO buyRequestDTO){
+        User user = userRepo.findByUsername(buyRequestDTO.username);
+        OwnedStock ownedstock = getOwnedStockByUserAndTicker(user, buyRequestDTO.ticker);
+        if(ownedstock == null){
             OwnedStock ownedStock = new OwnedStock();
             ownedStock.setUser(user);
-            ownedStock.setTicker(ticker);
-            ownedStock.setQuantity(quantity);
-            ownedStock.setName(name);
+            ownedStock.setTicker(buyRequestDTO.ticker);
+            ownedStock.setQuantity(buyRequestDTO.quantity);
+            ownedStock.setName(buyRequestDTO.name);
             ownedStockRepo.save(ownedStock);
         }
        else{
-           int current_quantity = ownedstocks.get(0).getQuantity();
-           ownedstocks.get(0).setQuantity(current_quantity+quantity);
-           ownedStockRepo.save(ownedstocks.get(0));
+           int current_quantity = ownedstock.getQuantity();
+           ownedstock.setQuantity(current_quantity + buyRequestDTO.quantity);
+           ownedStockRepo.save(ownedstock);
         }
     }
 
-    public List<OwnedStock> getOwnedStocksByUserAndTicker(User user, String ticker){
-        return ownedStockRepo.findByUserAndTicker(user,ticker);
+    public void sellStock(SellRequestDTO sellRequestDTO){
+        User user = userRepo.findByUsername(sellRequestDTO.username);
+        OwnedStock ownedstock = getOwnedStockByUserAndTicker(user, sellRequestDTO.ticker);
+        int current_quantity = ownedstock.getQuantity();
+        if (current_quantity == 1) {
+            ownedStockRepo.delete(ownedstock);
+        }
+        else {
+            ownedstock.setQuantity(current_quantity - sellRequestDTO.quantity);
+            ownedStockRepo.save(ownedstock);
+
+        }
+
+    }
+
+    public OwnedStock getOwnedStockByUserAndTicker(User user, String ticker){
+        return ownedStockRepo.findByUserAndTicker(user, ticker);
     }
 
     public List<OwnedStockDTO> mapOwnedListToOwnedDTOList(List<OwnedStock> ownedList){
