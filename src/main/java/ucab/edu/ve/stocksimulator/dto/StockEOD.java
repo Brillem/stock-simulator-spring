@@ -2,16 +2,16 @@ package ucab.edu.ve.stocksimulator.dto;
 
 public class StockEOD {
     public String date;
-    public double open;
-    public double high;
-    public double low;
-    public double close;
+    public float open;
+    public float high;
+    public float low;
+    public float close;
     public long volume;
 
     public StockEOD() {
     }
 
-    public StockEOD(String date, double open, double high, double low, double close, long volume) {
+    public StockEOD(String date, float open, float high, float low, float close, long volume) {
         this.date = date;
         this.open = open;
         this.high = high;
@@ -20,48 +20,24 @@ public class StockEOD {
         this.volume = volume;
     }
 
-    public String getDate() {
-        return date;
-    }
-
     public void setDate(String date) {
         this.date = date;
     }
 
-    public double getOpen() {
-        return open;
-    }
-
-    public void setOpen(double open) {
+    public void setOpen(float open) {
         this.open = open;
     }
 
-    public double getHigh() {
-        return high;
-    }
-
-    public void setHigh(double high) {
+    public void setHigh(float high) {
         this.high = high;
     }
 
-    public double getLow() {
-        return low;
-    }
-
-    public void setLow(double low) {
-        this.low = low;
-    }
-
-    public double getClose() {
-        return close;
-    }
-
-    public void setClose(double close) {
+    public void setClose(float close) {
         this.close = close;
     }
 
-    public long getVolume() {
-        return volume;
+    public void setLow(float low) {
+        this.low = low;
     }
 
     public void setVolume(long volume) {

@@ -5,11 +5,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import ucab.edu.ve.stocksimulator.dto.StockDTO;
+import ucab.edu.ve.stocksimulator.dto.response.MessageResponseDTO;
 import ucab.edu.ve.stocksimulator.dto.response.StockListResponseDTO;
+import ucab.edu.ve.stocksimulator.model.Stock;
 import ucab.edu.ve.stocksimulator.service.StockEODService;
 import ucab.edu.ve.stocksimulator.service.StockService;
 
@@ -25,6 +25,18 @@ public class StockController {
     public StockController(StockService stockservice, StockEODService stockEODService) {
         this.stockservice = stockservice;
         this.stockEODService = stockEODService;
+    }
+    @PostMapping("/admin/create")
+    public ResponseEntity<MessageResponseDTO> createStocks(@RequestBody StockDTO[] stockDTOList) {
+        for (StockDTO stockDTO : stockDTOList) {
+            Stock stock = new Stock();
+            stock.setDescription(stockDTO.description);
+            stock.setName(stockDTO.name);
+            stock.setTicker(stockDTO.ticker);
+            this.stockservice.save(stock);
+        }
+        MessageResponseDTO message = new MessageResponseDTO(0, "Acciones creadas");
+        return ResponseEntity.status(HttpStatus.CREATED).body(message);
     }
 
     @GetMapping("/all")
