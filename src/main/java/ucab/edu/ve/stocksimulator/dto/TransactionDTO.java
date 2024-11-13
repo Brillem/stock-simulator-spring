@@ -1,5 +1,6 @@
 package ucab.edu.ve.stocksimulator.dto;
 
+import java.time.LocalDate;
 import java.util.Date;
 
 public class TransactionDTO {
@@ -9,13 +10,21 @@ public class TransactionDTO {
     public String receptorUsername;
     public Float price;
     public int amount;
-    public Date date;
+    public LocalDate date;
 
-    public Date getDate() {
+    public String getReceptorUsername() {
+        return receptorUsername;
+    }
+
+    public void setReceptorUsername(String receptorUsername) {
+        this.receptorUsername = receptorUsername;
+    }
+
+    public LocalDate getDate() {
         return date;
     }
 
-    public void setDate(Date date) {
+    public void setDate(LocalDate date) {
         this.date = date;
     }
 

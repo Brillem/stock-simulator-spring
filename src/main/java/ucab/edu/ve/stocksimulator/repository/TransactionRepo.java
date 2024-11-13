@@ -7,7 +7,7 @@ import ucab.edu.ve.stocksimulator.model.User;
 import java.util.List;
 
 public interface TransactionRepo extends JpaRepository<Transaction,Long> {
-    List<Transaction> findAllByEmisorIDAndType(User user, String type);
-    List<Transaction> findAllByReceptorIDAndType(User user, String type);
+    List<Transaction> findByEmisorIDAndType(User user, String type);
+    List<Transaction> findAllByCompradorIDAndType(User user, String type);
 }
 

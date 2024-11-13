@@ -8,36 +8,51 @@ import ucab.edu.ve.stocksimulator.model.User;
 import ucab.edu.ve.stocksimulator.repository.TransactionRepo;
 import ucab.edu.ve.stocksimulator.repository.UserRepo;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
-import java.util.Optional;
-
-import java.util.Date;
 import java.util.Optional;
 
 @Service
 public class TransactionService {
     private final TransactionRepo transactionRepo;
+    private final UserRepo userRepo;
 
     @Autowired
-    public TransactionService(TransactionRepo transactionRepo) {
+    public TransactionService(TransactionRepo transactionRepo, UserRepo userRepo) {
         this.transactionRepo = transactionRepo;
+        this.userRepo = userRepo;
     }
 
-    public List<TransactionDTO> findAllPurchase(User user){
-        List<Transaction> transactions = transactionRepo.findAllByEmisorIDAndType(user,"buy");
+    public List<TransactionDTO> findAllPurchase(String username){
+        User user = userRepo.findByUsername(username);
+        List<Transaction> transactions = transactionRepo.findByEmisorIDAndType(user,"buy");
         return mapListTransactionToDTO(transactions);
     }
 
-    public List<TransactionDTO> findAllSales(User user){
-        List<Transaction> transactions = transactionRepo.findAllByEmisorIDAndType(user,"sell");
+    public List<TransactionDTO> findAllSales(String username){
+        User user = userRepo.findByUsername(username);
+        List<Transaction> transactions = transactionRepo.findByEmisorIDAndType(user,"sell");
         return mapListTransactionToDTO(transactions);
     }
+
+    public void registerPurchase(String username, String stockName,int quantity, float price){
+        User user = userRepo.findByUsername(username);
+        Transaction transaction = new Transaction();
+        transaction.setEmisorID(user);
+        transaction.setCantidad(quantity);
+        transaction.setCompradorID(null);
+        transaction.setNameStock(stockName);
+        transaction.setType("buy");
+        transaction.setValor(price);
+        transaction.setFecha(LocalDate.now());
+        transactionRepo.save(transaction);
+    }
+
 
     public List<TransactionDTO> findAllTransfers(User user){
-        List<Transaction> transactions = transactionRepo.findAllByEmisorIDAndType(user, "transfer");
-        transactions.addAll(transactionRepo.findAllByReceptorIDAndType(user, "transfer"));
+        List<Transaction> transactions = transactionRepo.findByEmisorIDAndType(user, "transfer");
+        transactions.addAll(transactionRepo.findAllByCompradorIDAndType(user, "transfer"));
         return mapListTransactionToDTO(transactions);
     }
 

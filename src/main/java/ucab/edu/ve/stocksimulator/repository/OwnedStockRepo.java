@@ -9,4 +9,5 @@ import java.util.List;
 
 public interface OwnedStockRepo extends JpaRepository<OwnedStock, Long> {
     List<OwnedStock> findByUser(User user);
+    List<OwnedStock> findByUserAndTicker(User user, String ticker);
 }

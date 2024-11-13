@@ -2,6 +2,7 @@ package ucab.edu.ve.stocksimulator.model;
 
 import jakarta.persistence.*;
 
+import java.time.LocalDate;
 import java.util.Date;
 
 @Entity
@@ -15,19 +16,19 @@ public class Transaction {
     private String nameStock; //nombre de la accion
     private String type; // (venta, compra y transferencia) lo dejo como string mientras tanto
     @ManyToOne
-    @JoinColumn(name = "stockUser_id", nullable = false)
+    @JoinColumn(name = "stockEmisor_id", nullable = false)
     private User emisorID; //market o usario
     @ManyToOne
-    @JoinColumn(name = "stockUser_id", nullable = true)
+    @JoinColumn(name = "stockComprador_id", nullable = true)
     private User compradorID; //market o usuario
     private Float valor; //valor de la accion en la transferencia
     private int cantidad; //cantidad de acciones en la transferencia
-    private Date fecha; //fecha de la transaccion
+    private LocalDate fecha; //fecha de la transaccion
 
     public Transaction() {
     }
 
-    public Transaction(Long id, String nameStock, String type, User emisorID, User compradorID, Float valor, int cantidad, Date fecha) {
+    public Transaction(Long id, String nameStock, String type, User emisorID, User compradorID, Float valor, int cantidad, LocalDate fecha) {
         this.id = id;
         this.nameStock = nameStock;
         this.type = type;
@@ -79,11 +80,11 @@ public class Transaction {
         this.cantidad = cantidad;
     }
 
-    public Date getFecha() {
+    public LocalDate getFecha() {
         return fecha;
     }
 
-    public void setFecha(Date fecha) {
+    public void setFecha(LocalDate fecha) {
         this.fecha = fecha;
     }
 

@@ -61,10 +61,4 @@ public class StockService {
         return stockListResponseDTO;
     }
 
-
-
-
-
-
-
 }
