@@ -8,6 +8,6 @@ import java.util.List;
 
 public interface TransactionRepo extends JpaRepository<Transaction,Long> {
     List<Transaction> findAllByEmisorIDAndType(User user, String type);
-    List<Transaction> findAllByReceptorIDAAndType(User user, String type);
+    List<Transaction> findAllByReceptorIDAndType(User user, String type);
 }
 

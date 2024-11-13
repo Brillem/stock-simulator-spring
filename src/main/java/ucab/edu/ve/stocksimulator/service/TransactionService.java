@@ -37,7 +37,7 @@ public class TransactionService {
 
     public List<TransactionDTO> findAllTransfers(User user){
         List<Transaction> transactions = transactionRepo.findAllByEmisorIDAndType(user, "transfer");
-        transactions.addAll(transactionRepo.findAllByReceptorIDAAndType(user, "transfer"));
+        transactions.addAll(transactionRepo.findAllByReceptorIDAndType(user, "transfer"));
         return mapListTransactionToDTO(transactions);
     }
 
@@ -67,6 +67,28 @@ public class TransactionService {
             transactionsDTO.add(mapTransactiontoDTO(transaction));
         }
         return transactionsDTO;
+    }
+    public boolean verifyVISA(String cardNumber){
+        // Check if the card number matches the VISA card pattern
+        if (!cardNumber.matches("^4[0-9]{12}(?:[0-9]{3})?(?:[0-9]{3})?$")) {
+            return false;
+        }
+
+        // Implement the Luhn algorithm to validate the card number
+        int sum = 0;
+        boolean alternate = false;
+        for (int i = cardNumber.length() - 1; i >= 0; i--) {
+            int n = Integer.parseInt(cardNumber.substring(i, i + 1));
+            if (alternate) {
+                n *= 2;
+                if (n > 9) {
+                    n = (n % 10) + 1;
+                }
+            }
+            sum += n;
+            alternate = !alternate;
+        }
+        return (sum % 10 == 0);
     }
 
 }
