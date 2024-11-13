@@ -4,10 +4,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import ucab.edu.ve.stocksimulator.dto.StockEOD;
-
-import java.util.Arrays;
-import java.util.List;
 
 @Service
 public class StockEODService {

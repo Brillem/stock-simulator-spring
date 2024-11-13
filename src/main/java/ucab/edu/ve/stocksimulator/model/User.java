@@ -19,7 +19,6 @@ public class User {
     private Boolean verified;
     private String hashedPassword;
 
-
     public Long getId() {
         return id;
     }

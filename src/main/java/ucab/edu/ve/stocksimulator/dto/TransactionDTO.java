@@ -3,21 +3,46 @@ package ucab.edu.ve.stocksimulator.dto;
 import java.util.Date;
 
 public class TransactionDTO {
-    public String nameStock;
+    public String stockTicker;
     public String type;
-    public Long emisorID;
-    public Long receptorID;
-    public Float valor;
-    public int cantidad;
-    public Date fecha;
+    public String emisorUsername;
+    public String receptorUsername;
+    public Float price;
+    public int amount;
+    public Date date;
 
-    public String getNameStock() {
-        return nameStock;
+    public Date getDate() {
+        return date;
     }
 
-    public void setNameStock(String nameStock) {
-        this.nameStock = nameStock;
+    public void setDate(Date date) {
+        this.date = date;
     }
+
+    public int getAmount() {
+        return amount;
+    }
+
+    public void setAmount(int amount) {
+        this.amount = amount;
+    }
+
+    public Float getPrice() {
+        return price;
+    }
+
+    public void setPrice(Float price) {
+        this.price = price;
+    }
+
+    public String getEmisorUsername() {
+        return emisorUsername;
+    }
+
+    public void setEmisorUsername(String emisorUsername) {
+        this.emisorUsername = emisorUsername;
+    }
+
 
     public String getType() {
         return type;
@@ -27,43 +52,11 @@ public class TransactionDTO {
         this.type = type;
     }
 
-    public Long getEmisorID() {
-        return emisorID;
+    public String getStockTicker() {
+        return stockTicker;
     }
 
-    public void setEmisorID(Long emisorID) {
-        this.emisorID = emisorID;
-    }
-
-    public Long getReceptorID() {
-        return receptorID;
-    }
-
-    public void setReceptorID(Long receptorID) {
-        this.receptorID = receptorID;
-    }
-
-    public Float getValor() {
-        return valor;
-    }
-
-    public void setValor(Float valor) {
-        this.valor = valor;
-    }
-
-    public int getCantidad() {
-        return cantidad;
-    }
-
-    public void setCantidad(int cantidad) {
-        this.cantidad = cantidad;
-    }
-
-    public Date getFecha() {
-        return fecha;
-    }
-
-    public void setFecha(Date fecha) {
-        this.fecha = fecha;
+    public void setStockTicker(String stockTicker) {
+        this.stockTicker = stockTicker;
     }
 }

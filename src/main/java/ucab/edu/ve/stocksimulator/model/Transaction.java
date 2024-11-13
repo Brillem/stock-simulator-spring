@@ -1,6 +1,7 @@
 package ucab.edu.ve.stocksimulator.model;
 
 import jakarta.persistence.*;
+
 import java.util.Date;
 
 @Entity
@@ -15,20 +16,23 @@ public class Transaction {
     private String type; // (venta, compra y transferencia) lo dejo como string mientras tanto
     @ManyToOne
     @JoinColumn(name = "stockUser_id", nullable = false)
-    private Long emisorID; //market o usario
+    private User emisorID; //market o usario
     @ManyToOne
     @JoinColumn(name = "stockUser_id", nullable = true)
-    private Long receptorID; //market o usuario
+    private User compradorID; //market o usuario
     private Float valor; //valor de la accion en la transferencia
     private int cantidad; //cantidad de acciones en la transferencia
     private Date fecha; //fecha de la transaccion
 
-    public Transaction(Long id, String nameStock, String type, Long emisorID, Long receptorID, Float valor, int cantidad, Date fecha) {
+    public Transaction() {
+    }
+
+    public Transaction(Long id, String nameStock, String type, User emisorID, User compradorID, Float valor, int cantidad, Date fecha) {
         this.id = id;
         this.nameStock = nameStock;
         this.type = type;
         this.emisorID = emisorID;
-        this.receptorID = receptorID;
+        this.compradorID = compradorID;
         this.valor = valor;
         this.cantidad = cantidad;
         this.fecha = fecha;
@@ -58,21 +62,6 @@ public class Transaction {
         this.type = type;
     }
 
-    public Long getEmisorID() {
-        return emisorID;
-    }
-
-    public void setEmisorID(Long emisorID) {
-        this.emisorID = emisorID;
-    }
-
-    public Long getReceptorID() {
-        return receptorID;
-    }
-
-    public void setReceptorID(Long receptorID) {
-        this.receptorID = receptorID;
-    }
 
     public Float getValor() {
         return valor;
@@ -96,5 +85,21 @@ public class Transaction {
 
     public void setFecha(Date fecha) {
         this.fecha = fecha;
+    }
+
+    public User getEmisorID() {
+        return emisorID;
+    }
+
+    public void setEmisorID(User emisorID) {
+        this.emisorID = emisorID;
+    }
+
+    public User getCompradorID() {
+        return compradorID;
+    }
+
+    public void setCompradorID(User compradorID) {
+        this.compradorID = compradorID;
     }
 }
