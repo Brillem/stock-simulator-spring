@@ -24,8 +24,8 @@ public class OwnedStockService {
         this.userRepo = userRepo;
     }
 
-    public List<OwnedStockDTO> getOwnedStocksByUser(User user) {
-        return mapOwnedListToOwnedDTOList(ownedStockRepo.findByUser(user));
+    public List<OwnedStockDTO> getOwnedStocksByUser(String username) {
+        return mapOwnedListToOwnedDTOList(ownedStockRepo.findByUser(this.userRepo.findByUsername(username)));
     }
 
 

@@ -50,7 +50,7 @@ public class StockController {
     }
 
     @GetMapping("/ownedstocks/{user}")
-    public ResponseEntity<List<OwnedStockDTO>> getOwnedStocksByUser(@PathVariable User user) {
+    public ResponseEntity<List<OwnedStockDTO>> getOwnedStocksByUser(@PathVariable String user) {
         List<OwnedStockDTO> response = ownedStockService.getOwnedStocksByUser(user);
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }

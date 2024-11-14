@@ -42,7 +42,7 @@ public class TransactionController {
         return ResponseEntity.status(HttpStatus.OK).body(responseTransactionDTOS);
     }
 
-    @GetMapping(value = "/verify-visa")
+    @PostMapping(value = "/verify-visa")
     public ResponseEntity<MessageResponseDTO> verifyVisaCard(String cardNumber) {
         MessageResponseDTO messageResponseDTO = new MessageResponseDTO();
         if (!transactionService.verifyVISA(cardNumber)) {
