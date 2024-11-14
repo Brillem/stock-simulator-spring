@@ -51,7 +51,7 @@ public class OwnedStockService {
         User user = userRepo.findByUsername(sellRequestDTO.username);
         OwnedStock ownedstock = getOwnedStockByUserAndTicker(user, sellRequestDTO.ticker);
         int current_quantity = ownedstock.getQuantity();
-        if (current_quantity == 1) {
+        if (current_quantity - sellRequestDTO.quantity <= 0) {
             ownedStockRepo.delete(ownedstock);
         }
         else {
