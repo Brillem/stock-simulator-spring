@@ -33,7 +33,12 @@ public class UserController {
         if (userService.userExistsByUsername(user.getUsername())) {
             MessageResponseDTO message = new MessageResponseDTO(1, "User already exists");
             return ResponseEntity.status(HttpStatus.OK).body(message);
-        } else {
+        }
+        else if (userService.userExistsByEmail(user.getEmail())) {
+            MessageResponseDTO message = new MessageResponseDTO(2, "Email already exists");
+            return ResponseEntity.status(HttpStatus.OK).body(message);
+        }
+        else {
             String email = user.getEmail();
             String code = PasswordUtil.generateRandomCode();
             this.emailSenderService.sendConfirmationEmail(email, code);
