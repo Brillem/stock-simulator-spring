@@ -1,13 +1,16 @@
 package ucab.edu.ve.stocksimulator.controller;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import ucab.edu.ve.stocksimulator.dto.request.ConfirmUserRequestDTO;
 import ucab.edu.ve.stocksimulator.dto.request.UserRequestDTO;
 import ucab.edu.ve.stocksimulator.dto.response.MessageResponseDTO;
 import ucab.edu.ve.stocksimulator.dto.response.UserResponseDTO;
 import ucab.edu.ve.stocksimulator.model.User;
+import ucab.edu.ve.stocksimulator.service.EmailSenderService;
 import ucab.edu.ve.stocksimulator.service.UserService;
 import util.PasswordUtil;
 
@@ -16,9 +19,12 @@ import util.PasswordUtil;
 @RequestMapping("/api/user")
 public class UserController {
     private final UserService userService;
+    private final EmailSenderService emailSenderService;
 
-    public UserController(UserService userService) {
+    @Autowired
+    public UserController(UserService userService, EmailSenderService emailSenderService) {
         this.userService = userService;
+        this.emailSenderService = emailSenderService;
     }
 
     @PostMapping(value= "/register", produces = "application/json")
@@ -28,7 +34,12 @@ public class UserController {
             MessageResponseDTO message = new MessageResponseDTO(1, "User already exists");
             return ResponseEntity.status(HttpStatus.OK).body(message);
         } else {
+            String email = user.getEmail();
+            String code = PasswordUtil.generateRandomCode();
+            this.emailSenderService.sendConfirmationEmail(email, code);
             User createdUser = userService.mapUserRequestDTOToUser(user);
+            createdUser.setConfirmationCode(code);
+            createdUser.setVerified(false);
             userService.createUser(createdUser);
             UserResponseDTO userResponse = userService.mapUserToUserResponseDTO(createdUser);
             return ResponseEntity.status(HttpStatus.OK).body(userResponse);
@@ -51,5 +62,21 @@ public class UserController {
             MessageResponseDTO message = new MessageResponseDTO(2, "User doesn't exist");
             return ResponseEntity.status(HttpStatus.OK).body(message);
         }
+    }
+
+    @PostMapping(value = "/confirm", produces = "application/json")
+    public ResponseEntity<MessageResponseDTO> confirmUser(@RequestBody ConfirmUserRequestDTO confirmUser) {
+        User user = userService.findUserByUsername(confirmUser.getUsername());
+        MessageResponseDTO message;
+        if (user.getConfirmationCode().equals(confirmUser.getConfirmationCode())) {
+            user.setVerified(true);
+            user.setConfirmationCode(null);
+            userService.updateUser(user);
+            message = new MessageResponseDTO(0, "User confirmed Successfully");
+        }
+        else {
+            message = new MessageResponseDTO(1, "Incorrect confirmation code");
+        }
+        return ResponseEntity.status(HttpStatus.OK).body(message);
     }
 }

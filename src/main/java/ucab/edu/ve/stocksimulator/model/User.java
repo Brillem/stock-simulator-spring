@@ -13,11 +13,13 @@ public class User {
     private Long id;
     private String firstName;
     private String lastName;
-    @Column(nullable = false, updatable = false)
+    @Column(unique = true, nullable = false)
     private String username;
+    @Column(unique = true, nullable = false)
     private String email;
     private Boolean verified;
     private String hashedPassword;
+    private String confirmationCode;
 
     public Long getId() {
         return id;
@@ -47,6 +49,7 @@ public class User {
         return hashedPassword;
     }
 
+    public String getConfirmationCode() { return confirmationCode; }
 
     public void setFirstName(String firstName) {
         this.firstName = firstName;
@@ -71,6 +74,8 @@ public class User {
     public void setHashedPassword(String hashedPassword) {
         this.hashedPassword = hashedPassword;
     }
+
+    public void setConfirmationCode(String confirmationCode) { this.confirmationCode = confirmationCode; }
 }
 
 

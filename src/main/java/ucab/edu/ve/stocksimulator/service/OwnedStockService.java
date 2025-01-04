@@ -1,5 +1,6 @@
 package ucab.edu.ve.stocksimulator.service;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ucab.edu.ve.stocksimulator.dto.OwnedStockDTO;
 import ucab.edu.ve.stocksimulator.dto.StockDTO;
@@ -19,6 +20,7 @@ public class OwnedStockService {
     private final OwnedStockRepo ownedStockRepo;
     private final UserRepo userRepo;
 
+    @Autowired
     public OwnedStockService(OwnedStockRepo ownedStockRepo, UserRepo userRepo) {
         this.ownedStockRepo = ownedStockRepo;
         this.userRepo = userRepo;

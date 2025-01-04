@@ -24,6 +24,8 @@ public class UserService {
         return userRepo.save(user);
     }
 
+    public User updateUser(User user) { return userRepo.save(user); }
+
     public User findUserByUsername(String username) {
         return userRepo.findByUsername(username);
     }
@@ -32,6 +34,8 @@ public class UserService {
         return userRepo.existsByUsername(username);
     }
 
+    public boolean userExistsByEmail(String email) { return userRepo.existsByEmail(email); }
+
 
     public User mapUserRequestDTOToUser(UserRequestDTO userRequestDTO) {
         User user = new User();
@@ -39,7 +43,7 @@ public class UserService {
         user.setLastName(userRequestDTO.getLastName());
         user.setUsername(userRequestDTO.getUsername());
         user.setHashedPassword(PasswordUtil.encodePassword(userRequestDTO.getPassword()));
-        user.setVerified(true);
+        user.setEmail(userRequestDTO.getEmail());
         return user;
     }
 

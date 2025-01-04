@@ -5,6 +5,7 @@ public class UserRequestDTO {
     private String lastName;
     private String username;
     private String password;
+    private String email;
 
     public String getFirstName() {
         return firstName;
@@ -20,6 +21,10 @@ public class UserRequestDTO {
 
     public String getPassword() {
         return password;
+    }
+
+    public String getEmail() {
+        return email;
     }
 
 }
