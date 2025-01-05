@@ -7,6 +7,7 @@ public class UserResponseDTO {
     public String username;
     public String email;
     public boolean verified;
+    public boolean admin;
 
 
     public UserResponseDTO() {
@@ -33,5 +34,9 @@ public class UserResponseDTO {
 
     public void setVerified(boolean verified) {
         this.verified = verified;
+    }
+
+    public void setAdmin(boolean admin) {
+        this.admin = admin;
     }
 }

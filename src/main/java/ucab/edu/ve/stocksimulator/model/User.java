@@ -20,6 +20,7 @@ public class User {
     private Boolean verified;
     private String hashedPassword;
     private String confirmationCode;
+    private Boolean admin = false;
 
     public Long getId() {
         return id;
@@ -76,6 +77,10 @@ public class User {
     }
 
     public void setConfirmationCode(String confirmationCode) { this.confirmationCode = confirmationCode; }
+
+    public void setAdmin(Boolean admin) { this.admin = admin; }
+
+    public boolean getAdmin() { return admin; }
 }
 
 

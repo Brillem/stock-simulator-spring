@@ -107,6 +107,13 @@ public class UserController {
         }
         if (user.getEmail() != null) {
             oldUser.setEmail(user.getEmail());
+            if (!oldUser.getVerified()) {
+                String code = PasswordUtil.generateRandomCode();
+                oldUser.setConfirmationCode(code);
+                //Esto se hace solo para que no llegue null al enviar el correo
+                user.setUsername(oldUser.getUsername());
+                this.userService.sendConfirmationEmail(user, code);
+            }
         }
         if (user.getPassword() != null) {
             oldUser.setHashedPassword(PasswordUtil.encodePassword(user.getPassword()));
