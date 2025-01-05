@@ -30,7 +30,6 @@ public class UserController {
 
     @PostMapping(value= "/register", produces = "application/json")
     public ResponseEntity<Object> registerUser(@RequestBody UserRequestDTO user) {
-        System.out.println(user.getFirstName() + " " + user.getLastName());
         if (userService.userExistsByUsername(user.getUsername())) {
             MessageResponseDTO message = new MessageResponseDTO(1, "User already exists");
             return ResponseEntity.status(HttpStatus.OK).body(message);
@@ -40,9 +39,8 @@ public class UserController {
             return ResponseEntity.status(HttpStatus.OK).body(message);
         }
         else {
-            String email = user.getEmail();
             String code = PasswordUtil.generateRandomCode();
-            this.emailSenderService.sendConfirmationEmail(email, code);
+            this.userService.sendConfirmationEmail(user, code);
             User createdUser = userService.mapUserRequestDTOToUser(user);
             createdUser.setConfirmationCode(code);
             createdUser.setVerified(false);

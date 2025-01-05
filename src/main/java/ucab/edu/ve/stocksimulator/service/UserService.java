@@ -15,9 +15,11 @@ import java.util.List;
 @Service
 public class UserService {
     private final UserRepo userRepo;
+    private final EmailSenderService emailSenderService;
 
     @Autowired
-    public UserService(UserRepo userRepo) {
+    public UserService(UserRepo userRepo, EmailSenderService emailSenderService) {
+        this.emailSenderService = emailSenderService;
         this.userRepo = userRepo;
     }
 
@@ -72,4 +74,11 @@ public class UserService {
     }
 
 
+
+    public void sendConfirmationEmail(UserRequestDTO userRequestDTO, String confirmationCode) {
+        String subject = "Confirmación de Usuario " + userRequestDTO.getUsername() + " | Stock Simulator";
+        String body = "Gracias " + userRequestDTO.getFirstName() + " por unirte a Stock Simulator. El código de confirmación para su usuario " + userRequestDTO.getUsername() + " es "
+               + confirmationCode + ". Ingresa al ícono con sus iniciales en la parte superior derecha de la plataforma y haz click en 'Verificar Usuario'.\n\n\nAtentamente, Stock Simulator." ;
+        this.emailSenderService.sendEmail(userRequestDTO.getEmail(), subject, body);
+    }
 }
