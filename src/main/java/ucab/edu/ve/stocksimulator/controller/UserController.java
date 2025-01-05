@@ -2,10 +2,10 @@ package ucab.edu.ve.stocksimulator.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ucab.edu.ve.stocksimulator.dto.request.ConfirmUserRequestDTO;
+import ucab.edu.ve.stocksimulator.dto.request.EditRequestDTO;
 import ucab.edu.ve.stocksimulator.dto.request.UserRequestDTO;
 import ucab.edu.ve.stocksimulator.dto.response.MessageResponseDTO;
 import ucab.edu.ve.stocksimulator.dto.response.UserResponseDTO;
@@ -13,6 +13,7 @@ import ucab.edu.ve.stocksimulator.model.User;
 import ucab.edu.ve.stocksimulator.service.EmailSenderService;
 import ucab.edu.ve.stocksimulator.service.UserService;
 import util.PasswordUtil;
+import java.util.List;
 
 
 @RestController
@@ -80,6 +81,40 @@ public class UserController {
         else {
             message = new MessageResponseDTO(1, "Incorrect confirmation code");
         }
+        return ResponseEntity.status(HttpStatus.OK).body(message);
+    }
+
+    @GetMapping("/all")
+    public ResponseEntity<List<UserResponseDTO>> getAllUsers() {
+        List<User> users = userService.getAllUsers();
+        List<UserResponseDTO> usersResponse = userService.mapUserListToUserResponseDTOList(users);
+        return ResponseEntity.status(HttpStatus.OK).body(usersResponse);
+    }
+
+    @PostMapping(value = "/edit", produces = "application/json")
+    public ResponseEntity<Object> editUser(@RequestBody EditRequestDTO user) {
+        User oldUser = userService.findUserByUsername(user.getOldUsername());
+        if (user.getUsername() != null && userService.userExistsByUsername(user.getUsername())) {
+            MessageResponseDTO message = new MessageResponseDTO(1, "Username already exists");
+            return ResponseEntity.status(HttpStatus.OK).body(message);
+        }
+        if (user.getEmail() != null && userService.userExistsByEmail(user.getEmail())) {
+            MessageResponseDTO message = new MessageResponseDTO(2, "Email already exists");
+            return ResponseEntity.status(HttpStatus.OK).body(message);
+        }
+        if (user.getUsername() != null) {
+            oldUser.setUsername(user.getUsername());
+        }
+        if (user.getEmail() != null) {
+            oldUser.setEmail(user.getEmail());
+        }
+        if (user.getPassword() != null) {
+            oldUser.setHashedPassword(PasswordUtil.encodePassword(user.getPassword()));
+        }
+        oldUser.setFirstName(user.getFirstName());
+        oldUser.setLastName(user.getLastName());
+        userService.updateUser(oldUser);
+        MessageResponseDTO message = new MessageResponseDTO(0, "User updated successfully");
         return ResponseEntity.status(HttpStatus.OK).body(message);
     }
 }

@@ -1,5 +1,7 @@
 package ucab.edu.ve.stocksimulator.service;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import ucab.edu.ve.stocksimulator.dto.request.UserRequestDTO;
 import ucab.edu.ve.stocksimulator.dto.response.UserResponseDTO;
@@ -7,6 +9,7 @@ import ucab.edu.ve.stocksimulator.model.User;
 import ucab.edu.ve.stocksimulator.repository.UserRepo;
 import util.PasswordUtil;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -29,6 +32,12 @@ public class UserService {
     public User findUserByUsername(String username) {
         return userRepo.findByUsername(username);
     }
+
+    public User findUserByEmail(String email) { return userRepo.findByEmail(email); }
+
+    public User findUserById(Long id) { return userRepo.findById(id).orElse(null); }
+
+    public List<User> getAllUsers() { return userRepo.findAll(); }
 
     public boolean userExistsByUsername(String username) {
         return userRepo.existsByUsername(username);
@@ -56,6 +65,15 @@ public class UserService {
         userResponseDTO.setVerified(user.getVerified());
         return userResponseDTO;
     }
+    public List<UserResponseDTO> mapUserListToUserResponseDTOList(List<User> userList) {
+        List<UserResponseDTO> userResponseDTOList = new ArrayList<>();
+        for (User user : userList) {
+            userResponseDTOList.add(mapUserToUserResponseDTO(user));
+        }
+        return userResponseDTOList;
+    }
+
+
 
     public void sendConfirmationEmail(UserRequestDTO userRequestDTO, String confirmationCode) {
         String subject = "Confirmación de Usuario " + userRequestDTO.getUsername() + " | Stock Simulator";
