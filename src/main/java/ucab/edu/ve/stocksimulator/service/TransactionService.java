@@ -26,17 +26,18 @@ public class TransactionService {
         this.userRepo = userRepo;
     }
 
-    public List<TransactionDTO> findAllPurchase(String username){
+    public List<TransactionDTO> findAllTransactions(String username){
         User user = userRepo.findByUsername(username);
-        List<Transaction> transactions = transactionRepo.findAllByIssuerAndType(user,"buy");
+        List<Transaction> transactions = transactionRepo.findAllByIssuer(user);
+        transactions.addAll(transactionRepo.findAllByReceptor(user));
         return mapListTransactionToDTO(transactions);
     }
 
-    public List<TransactionDTO> findAllSales(String username){
+   /*public List<TransactionDTO> findAllSales(String username){
         User user = userRepo.findByUsername(username);
         List<Transaction> transactions = transactionRepo.findAllByIssuerAndType(user,"sell");
         return mapListTransactionToDTO(transactions);
-    }
+    }*/
 
     public void registerPurchase(BuyRequestDTO buyRequestDTO){
         User user = userRepo.findByUsername(buyRequestDTO.username);
@@ -64,12 +65,6 @@ public class TransactionService {
         transactionRepo.save(transaction);
     }
 
-
-    public List<TransactionDTO> findAllTransfers(User user){
-        List<Transaction> transactions = transactionRepo.findAllByIssuerAndType(user, "transfer");
-        transactions.addAll(transactionRepo.findAllByReceptorAndType(user, "transfer"));
-        return mapListTransactionToDTO(transactions);
-    }
 
     public Optional<Transaction> findStockById(Long id){
         return transactionRepo.findById(id);
