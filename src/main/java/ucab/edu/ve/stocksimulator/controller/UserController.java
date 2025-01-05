@@ -92,8 +92,21 @@ public class UserController {
         List<UserResponseDTO> usersResponse = userService.mapUserListToUserResponseDTOList(users);
         return ResponseEntity.status(HttpStatus.OK).body(usersResponse);
     }
+
     @PostMapping(value = "/edit", produces = "application/json")
-    public ResponseEntity<Object> editUser(User user) {
+    public ResponseEntity<Object> editUser(@RequestBody User user) {
+        User existingUserByUsername = userService.findUserByUsername(user.getUsername());
+        if (existingUserByUsername != null && !existingUserByUsername.getId().equals(user.getId())) {
+            MessageResponseDTO message = new MessageResponseDTO(1, "Username already exists");
+            return ResponseEntity.status(HttpStatus.OK).body(message);
+        }
+
+        User existingUserByEmail = userService.findUserByEmail(user.getEmail());
+        if (existingUserByEmail != null && !existingUserByEmail.getId().equals(user.getId())) {
+            MessageResponseDTO message = new MessageResponseDTO(2, "Email already exists");
+            return ResponseEntity.status(HttpStatus.OK).body(message);
+        }
+
         userService.updateUser(user);
         MessageResponseDTO message = new MessageResponseDTO(0, "User updated successfully");
         return ResponseEntity.status(HttpStatus.OK).body(message);

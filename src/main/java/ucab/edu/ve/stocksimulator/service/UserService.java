@@ -31,6 +31,8 @@ public class UserService {
         return userRepo.findByUsername(username);
     }
 
+    public User findUserByEmail(String email) { return userRepo.findByEmail(email); }
+
     public User findUserById(Long id) { return userRepo.findById(id).orElse(null); }
 
     public List<User> getAllUsers() { return userRepo.findAll(); }
@@ -68,5 +70,6 @@ public class UserService {
         }
         return userResponseDTOList;
     }
+
 
 }
