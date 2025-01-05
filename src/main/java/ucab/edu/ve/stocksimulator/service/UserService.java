@@ -1,7 +1,5 @@
 package ucab.edu.ve.stocksimulator.service;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import ucab.edu.ve.stocksimulator.dto.request.UserRequestDTO;
 import ucab.edu.ve.stocksimulator.dto.response.UserResponseDTO;
@@ -14,9 +12,11 @@ import java.util.List;
 @Service
 public class UserService {
     private final UserRepo userRepo;
+    private final EmailSenderService emailSenderService;
 
     @Autowired
-    public UserService(UserRepo userRepo) {
+    public UserService(UserRepo userRepo, EmailSenderService emailSenderService) {
+        this.emailSenderService = emailSenderService;
         this.userRepo = userRepo;
     }
 
@@ -55,5 +55,12 @@ public class UserService {
         userResponseDTO.setEmail(user.getEmail());
         userResponseDTO.setVerified(user.getVerified());
         return userResponseDTO;
+    }
+
+    public void sendConfirmationEmail(UserRequestDTO userRequestDTO, String confirmationCode) {
+        String subject = "Confirmación de Usuario " + userRequestDTO.getUsername() + " | Stock Simulator";
+        String body = "Gracias " + userRequestDTO.getFirstName() + " por unirte a Stock Simulator. El código de confirmación para ingresar con su usuario " + userRequestDTO.getUsername() + " es "
+               + confirmationCode + ".\n\n" ;
+        this.emailSenderService.sendEmail(userRequestDTO.getEmail(), subject, body);
     }
 }
