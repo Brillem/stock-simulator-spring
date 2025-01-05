@@ -35,7 +35,7 @@ public class TransactionController {
     }
 
     //metodo que devuelve la lista de acciones compradas y vendidas
-    @GetMapping("/all")
+    @GetMapping("/all") //a
     public ResponseEntity<List<TransactionDTO>> getAllTransactions(String username){
         List<TransactionDTO> responseTransactionDTOS = transactionService.findAllTransactions(username);
         return ResponseEntity.status(HttpStatus.OK).body(responseTransactionDTOS);

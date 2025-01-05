@@ -26,6 +26,7 @@ public class TransactionService {
         this.userRepo = userRepo;
     }
 
+    //a
     public List<TransactionDTO> findAllTransactions(String username){
         User user = userRepo.findByUsername(username);
         List<Transaction> transactions = transactionRepo.findAllByIssuer(user);
