@@ -9,6 +9,7 @@ import ucab.edu.ve.stocksimulator.model.User;
 import ucab.edu.ve.stocksimulator.repository.UserRepo;
 import util.PasswordUtil;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -29,6 +30,10 @@ public class UserService {
     public User findUserByUsername(String username) {
         return userRepo.findByUsername(username);
     }
+
+    public User findUserById(Long id) { return userRepo.findById(id).orElse(null); }
+
+    public List<User> getAllUsers() { return userRepo.findAll(); }
 
     public boolean userExistsByUsername(String username) {
         return userRepo.existsByUsername(username);
@@ -56,4 +61,12 @@ public class UserService {
         userResponseDTO.setVerified(user.getVerified());
         return userResponseDTO;
     }
+    public List<UserResponseDTO> mapUserListToUserResponseDTOList(List<User> userList) {
+        List<UserResponseDTO> userResponseDTOList = new ArrayList<>();
+        for (User user : userList) {
+            userResponseDTOList.add(mapUserToUserResponseDTO(user));
+        }
+        return userResponseDTOList;
+    }
+
 }

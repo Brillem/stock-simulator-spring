@@ -13,6 +13,7 @@ import ucab.edu.ve.stocksimulator.model.User;
 import ucab.edu.ve.stocksimulator.service.EmailSenderService;
 import ucab.edu.ve.stocksimulator.service.UserService;
 import util.PasswordUtil;
+import java.util.List;
 
 
 @RestController
@@ -83,5 +84,37 @@ public class UserController {
             message = new MessageResponseDTO(1, "Incorrect confirmation code");
         }
         return ResponseEntity.status(HttpStatus.OK).body(message);
+    }
+
+    @GetMapping("/all")
+    public ResponseEntity<List<UserResponseDTO>> getAllUsers() {
+        List<User> users = userService.getAllUsers();
+        List<UserResponseDTO> usersResponse = userService.mapUserListToUserResponseDTOList(users);
+        return ResponseEntity.status(HttpStatus.OK).body(usersResponse);
+    }
+    @PostMapping(value = "/edit", produces = "application/json")
+    public ResponseEntity<Object> editUser(User user) {
+        User old_user = userService.findUserById(user.getId());
+        if (userService.userExistsByUsername(user.getUsername()) && !user.getUsername().equals(old_user.getUsername())) {
+            MessageResponseDTO message = new MessageResponseDTO(1, "Username already taken");
+            return ResponseEntity.status(HttpStatus.OK).body(message);
+        }
+        else if (userService.userExistsByEmail(user.getEmail()) && !user.getEmail().equals(old_user.getEmail())) {
+            MessageResponseDTO message = new MessageResponseDTO(2, "Email already used");
+            return ResponseEntity.status(HttpStatus.OK).body(message);
+        }
+        if (userService.userExistsByUsername(user.getUsername()) && user.getUsername().equals(old_user.getUsername())) {
+            MessageResponseDTO message = new MessageResponseDTO(3, "Cannot use the same username");
+            return ResponseEntity.status(HttpStatus.OK).body(message);
+        }
+        else if (userService.userExistsByEmail(user.getEmail()) && user.getEmail().equals(old_user.getEmail())) {
+            MessageResponseDTO message = new MessageResponseDTO(4, "Cannot use the same email");
+            return ResponseEntity.status(HttpStatus.OK).body(message);
+        }
+        else {
+            userService.updateUser(user);
+            MessageResponseDTO message = new MessageResponseDTO(0, "User updated successfully");
+            return ResponseEntity.status(HttpStatus.OK).body(message);
+        }
     }
 }
