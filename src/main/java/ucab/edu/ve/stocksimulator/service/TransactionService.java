@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import ucab.edu.ve.stocksimulator.dto.TransactionDTO;
 import ucab.edu.ve.stocksimulator.dto.request.BuyRequestDTO;
 import ucab.edu.ve.stocksimulator.dto.request.SellRequestDTO;
+import ucab.edu.ve.stocksimulator.dto.request.TransferRequestDTO;
 import ucab.edu.ve.stocksimulator.model.Transaction;
 import ucab.edu.ve.stocksimulator.model.User;
 import ucab.edu.ve.stocksimulator.repository.TransactionRepo;
@@ -62,6 +63,20 @@ public class TransactionService {
         transaction.setNameStock(sellRequestDTO.name);
         transaction.setType("sell");
         transaction.setAmount(sellRequestDTO.amount);
+        transaction.setDate(LocalDate.now());
+        transactionRepo.save(transaction);
+    }
+
+    public void registerTransfer(TransferRequestDTO transferRequestDTO){
+        User issuerUser = userRepo.findByUsername(transferRequestDTO.issuerUsername);
+        User receptorUser = userRepo.findByUsername(transferRequestDTO.receptorUsername);
+        Transaction transaction = new Transaction();
+        transaction.setIssuer(issuerUser);
+        transaction.setQuantity(transferRequestDTO.quantity);
+        transaction.setReceptor(receptorUser);
+        transaction.setNameStock(transferRequestDTO.name);
+        transaction.setType("transfer");
+        transaction.setAmount(transferRequestDTO.amount);
         transaction.setDate(LocalDate.now());
         transactionRepo.save(transaction);
     }

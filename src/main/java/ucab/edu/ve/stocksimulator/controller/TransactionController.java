@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 import ucab.edu.ve.stocksimulator.dto.TransactionDTO;
 import ucab.edu.ve.stocksimulator.dto.request.BuyRequestDTO;
 import ucab.edu.ve.stocksimulator.dto.request.SellRequestDTO;
+import ucab.edu.ve.stocksimulator.dto.request.TransferRequestDTO;
 import ucab.edu.ve.stocksimulator.dto.response.MessageResponseDTO;
 import ucab.edu.ve.stocksimulator.model.Transaction;
 import ucab.edu.ve.stocksimulator.model.User;
@@ -77,4 +78,17 @@ public class TransactionController {
         messageResponseDTO.setMessage("Purchase completed successfully");
         return ResponseEntity.status(HttpStatus.OK).body(messageResponseDTO);
     }
+
+    @PostMapping(value = "/transfer")
+    public ResponseEntity<MessageResponseDTO> transferStock(@RequestBody TransferRequestDTO transferRequestDTO){
+        MessageResponseDTO messageResponseDTO = new MessageResponseDTO();
+        ownedStockService.transferStock(transferRequestDTO);
+        transactionService.registerTransfer(transferRequestDTO);
+        messageResponseDTO.setCode(0);
+        messageResponseDTO.setMessage("Transfer completed successfully");
+        return ResponseEntity.status(HttpStatus.OK).body(messageResponseDTO);
+    }
+
+
+
 }
