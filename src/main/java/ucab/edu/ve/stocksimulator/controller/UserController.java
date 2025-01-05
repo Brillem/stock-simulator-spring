@@ -29,7 +29,6 @@ public class UserController {
 
     @PostMapping(value= "/register", produces = "application/json")
     public ResponseEntity<Object> registerUser(@RequestBody UserRequestDTO user) {
-        System.out.println(user.getFirstName() + " " + user.getLastName());
         if (userService.userExistsByUsername(user.getUsername())) {
             MessageResponseDTO message = new MessageResponseDTO(1, "User already exists");
             return ResponseEntity.status(HttpStatus.OK).body(message);

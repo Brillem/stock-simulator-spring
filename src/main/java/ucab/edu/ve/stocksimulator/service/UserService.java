@@ -59,8 +59,8 @@ public class UserService {
 
     public void sendConfirmationEmail(UserRequestDTO userRequestDTO, String confirmationCode) {
         String subject = "Confirmación de Usuario " + userRequestDTO.getUsername() + " | Stock Simulator";
-        String body = "Gracias " + userRequestDTO.getFirstName() + " por unirte a Stock Simulator. El código de confirmación para ingresar con su usuario " + userRequestDTO.getUsername() + " es "
-               + confirmationCode + ".\n\n" ;
+        String body = "Gracias " + userRequestDTO.getFirstName() + " por unirte a Stock Simulator. El código de confirmación para su usuario " + userRequestDTO.getUsername() + " es "
+               + confirmationCode + ". Ingresa al ícono con sus iniciales en la parte superior derecha de la plataforma y haz click en 'Verificar Usuario'.\n\n\nAtentamente, Stock Simulator." ;
         this.emailSenderService.sendEmail(userRequestDTO.getEmail(), subject, body);
     }
 }
