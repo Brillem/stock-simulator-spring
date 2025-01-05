@@ -6,8 +6,4 @@ public class EditRequestDTO extends UserRequestDTO {
     public String getOldUsername() {
         return oldUsername;
     }
-
-    public void setOldUsername(String oldUsername) {
-        this.oldUsername = oldUsername;
-    }
 }

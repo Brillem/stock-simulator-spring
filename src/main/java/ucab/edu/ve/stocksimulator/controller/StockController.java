@@ -14,6 +14,7 @@ import ucab.edu.ve.stocksimulator.model.User;
 import ucab.edu.ve.stocksimulator.service.OwnedStockService;
 import ucab.edu.ve.stocksimulator.service.StockEODService;
 import ucab.edu.ve.stocksimulator.service.StockService;
+import ucab.edu.ve.stocksimulator.service.UserService;
 
 import java.util.List;
 
@@ -23,12 +24,14 @@ public class StockController {
     private  final StockService stockservice;
     private final StockEODService stockEODService;
     private final OwnedStockService ownedStockService;
+    private final UserService userService;
 
     @Autowired
-    public StockController(StockService stockservice, StockEODService stockEODService, OwnedStockService ownedStockService) {
+    public StockController(StockService stockservice, StockEODService stockEODService, OwnedStockService ownedStockService, UserService userService) {
         this.stockservice = stockservice;
         this.stockEODService = stockEODService;
         this.ownedStockService = ownedStockService;
+        this.userService = userService;
 
     }
 
@@ -64,6 +67,7 @@ public class StockController {
             stock.setTicker(stockDTO.ticker);
             this.stockservice.save(stock);
         }
+        this.userService.createAdmin();
         MessageResponseDTO message = new MessageResponseDTO(0, "Acciones creadas");
         return ResponseEntity.status(HttpStatus.CREATED).body(message);
     }
