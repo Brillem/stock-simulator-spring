@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ucab.edu.ve.stocksimulator.dto.ContactFormDTO;
 import ucab.edu.ve.stocksimulator.model.ContactForm;
+import ucab.edu.ve.stocksimulator.model.User;
 import ucab.edu.ve.stocksimulator.repository.ContactFormRepo;
 import ucab.edu.ve.stocksimulator.repository.UserRepo;
 
@@ -36,18 +37,28 @@ public class ContactFormService {
         contactFormRepo.save(contactForm);
     }
 
+    public void deleteForm(ContactFormDTO contactFormDTO) {
+        User user = userRepo.findByUsername(contactFormDTO.username);
+        ContactForm contactForm = getFormByUserAndTextMesage(user, contactFormDTO.textMessage);
+        contactFormRepo.delete(contactForm);
+    }
+
+    public ContactForm getFormByUserAndTextMesage(User user, String text){
+        return contactFormRepo.findByUserAndTextMessage(user, text);
+    }
+
     public List<ContactFormDTO> mapContactFormListToContactFormDTOList(List<ContactForm> contactForm){
         List<ContactFormDTO> contactFormDTOList = new ArrayList<>();
         if (contactForm.isEmpty()) {
             return contactFormDTOList;
         }
         for (ContactForm contact : contactForm) {
-            contactFormDTOList.add(mapOwnedtoDTO(contact));
+            contactFormDTOList.add(mapContacttoDTO(contact));
         }
         return contactFormDTOList;
     }
 
-    public ContactFormDTO mapOwnedtoDTO(ContactForm contact){
+    public ContactFormDTO mapContacttoDTO(ContactForm contact){
         ContactFormDTO contactDTO = new ContactFormDTO();
         contactDTO.username = contact.getUser().getUsername();
         contactDTO.textMessage = contact.getTextMessage();

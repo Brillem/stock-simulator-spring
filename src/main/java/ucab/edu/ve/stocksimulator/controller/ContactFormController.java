@@ -41,4 +41,12 @@ public class ContactFormController {
         messageResponseDTO.setMessage("Form added successfully");
         return ResponseEntity.status(HttpStatus.OK).body(messageResponseDTO);
     }
+
+    @PostMapping(value = "/delete")
+    public ResponseEntity<MessageResponseDTO> deleteForm(@RequestBody ContactFormDTO contactDTO) {
+        MessageResponseDTO messageResponseDTO = new MessageResponseDTO();
+        contactFormService.deleteForm(contactDTO);
+        messageResponseDTO.setMessage("Form deleted successfully");
+        return ResponseEntity.status(HttpStatus.OK).body(messageResponseDTO);
+    }
 }

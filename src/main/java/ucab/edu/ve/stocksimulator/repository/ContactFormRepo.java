@@ -8,4 +8,5 @@ import java.util.List;
 
 public interface ContactFormRepo extends JpaRepository<ContactForm, Long> {
     List<ContactForm> findByUser(User user);
+    ContactForm findByUserAndTextMessage(User user, String textMessage);
 }
