@@ -13,7 +13,7 @@ public class OwnedStock {
     private String name;
     private int quantity;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.REMOVE)
     @JoinColumn(name = "stockuser_id", nullable = false)
     private User user;
 

@@ -16,7 +16,7 @@ public class Transaction {
     private String nameStock;
     private String ticker;
     private String type;
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.REMOVE)
     @JoinColumn(name = "issuer_id", nullable = false)
     private User issuer;
     @ManyToOne
