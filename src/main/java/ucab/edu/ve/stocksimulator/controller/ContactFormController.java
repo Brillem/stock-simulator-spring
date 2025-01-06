@@ -3,10 +3,9 @@ package ucab.edu.ve.stocksimulator.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import ucab.edu.ve.stocksimulator.dto.ContactFormDTO;
+import ucab.edu.ve.stocksimulator.dto.response.MessageResponseDTO;
 import ucab.edu.ve.stocksimulator.service.ContactFormService;
 import ucab.edu.ve.stocksimulator.service.UserService;
 
@@ -33,5 +32,13 @@ public class ContactFormController {
             List<ContactFormDTO> response = contactFormService.getFormsByUser(username);
             return ResponseEntity.status(HttpStatus.OK).body(response);
         }
+    }
+
+    @PostMapping(value = "/add")
+    public ResponseEntity<MessageResponseDTO> addForm(@RequestBody ContactFormDTO contactDTO) {
+        MessageResponseDTO messageResponseDTO = new MessageResponseDTO();
+        contactFormService.addForm(contactDTO);
+        messageResponseDTO.setMessage("Form added successfully");
+        return ResponseEntity.status(HttpStatus.OK).body(messageResponseDTO);
     }
 }
