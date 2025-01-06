@@ -125,7 +125,7 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.OK).body(message);
     }
 
-    @GetMapping("/delete")
+    @PostMapping("/delete")
     public ResponseEntity<MessageResponseDTO> removeUser(String username) {
         userService.removeUser(username);
         MessageResponseDTO message = new MessageResponseDTO(0, "User removed successfully");
