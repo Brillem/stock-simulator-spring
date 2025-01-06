@@ -124,4 +124,11 @@ public class UserController {
         MessageResponseDTO message = new MessageResponseDTO(0, "User updated successfully");
         return ResponseEntity.status(HttpStatus.OK).body(message);
     }
+
+    @GetMapping("/remove")
+    public ResponseEntity<MessageResponseDTO> removeUser(String username) {
+        userService.removeUser(username);
+        MessageResponseDTO message = new MessageResponseDTO(0, "User removed successfully");
+        return ResponseEntity.status(HttpStatus.OK).body(message);
+    }
 }

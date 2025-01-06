@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 import ucab.edu.ve.stocksimulator.dto.TransactionDTO;
 import ucab.edu.ve.stocksimulator.dto.request.BuyRequestDTO;
 import ucab.edu.ve.stocksimulator.dto.request.SellRequestDTO;
+import ucab.edu.ve.stocksimulator.dto.request.TransferRequestDTO;
 import ucab.edu.ve.stocksimulator.dto.response.MessageResponseDTO;
 import ucab.edu.ve.stocksimulator.model.Transaction;
 import ucab.edu.ve.stocksimulator.model.User;
@@ -35,10 +36,9 @@ public class TransactionController {
     }
 
     //metodo que devuelve la lista de acciones compradas y vendidas
-    @GetMapping("/buy-sell")
-    public ResponseEntity<List<TransactionDTO>> getBuysAndSell(String username){
-        List<TransactionDTO> responseTransactionDTOS = transactionService.findAllPurchase(username);
-        responseTransactionDTOS.addAll(transactionService.findAllSales(username));
+    @GetMapping("/all") //a
+    public ResponseEntity<List<TransactionDTO>> getAllTransactions(String username){
+        List<TransactionDTO> responseTransactionDTOS = transactionService.findAllTransactions(username);
         return ResponseEntity.status(HttpStatus.OK).body(responseTransactionDTOS);
     }
 
@@ -78,4 +78,17 @@ public class TransactionController {
         messageResponseDTO.setMessage("Purchase completed successfully");
         return ResponseEntity.status(HttpStatus.OK).body(messageResponseDTO);
     }
+
+    @PostMapping(value = "/transfer")
+    public ResponseEntity<MessageResponseDTO> transferStock(@RequestBody TransferRequestDTO transferRequestDTO){
+        MessageResponseDTO messageResponseDTO = new MessageResponseDTO();
+        ownedStockService.transferStock(transferRequestDTO);
+        transactionService.registerTransfer(transferRequestDTO);
+        messageResponseDTO.setCode(0);
+        messageResponseDTO.setMessage("Transfer completed successfully");
+        return ResponseEntity.status(HttpStatus.OK).body(messageResponseDTO);
+    }
+
+
+
 }

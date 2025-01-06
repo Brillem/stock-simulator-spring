@@ -6,6 +6,7 @@ import ucab.edu.ve.stocksimulator.dto.OwnedStockDTO;
 import ucab.edu.ve.stocksimulator.dto.StockDTO;
 import ucab.edu.ve.stocksimulator.dto.request.BuyRequestDTO;
 import ucab.edu.ve.stocksimulator.dto.request.SellRequestDTO;
+import ucab.edu.ve.stocksimulator.dto.request.TransferRequestDTO;
 import ucab.edu.ve.stocksimulator.model.OwnedStock;
 import ucab.edu.ve.stocksimulator.model.Stock;
 import ucab.edu.ve.stocksimulator.model.User;
@@ -62,6 +63,40 @@ public class OwnedStockService {
 
         }
 
+    }
+
+    public void transferStock(TransferRequestDTO transferRequestDTO){
+        User issuerUser = userRepo.findByUsername(transferRequestDTO.issuerUsername);
+        User receptorUser = userRepo.findByUsername(transferRequestDTO.receptorUsername);
+
+        //Elimina acciones del usuario emisor
+        OwnedStock issuerOwnedStocks = getOwnedStockByUserAndTicker(issuerUser, transferRequestDTO.ticker);
+        int issuer_current_quantity = issuerOwnedStocks.getQuantity();
+        if (issuer_current_quantity - transferRequestDTO.quantity <= 0) {
+            ownedStockRepo.delete(issuerOwnedStocks);
+        }
+        else {
+            issuerOwnedStocks.setQuantity(issuer_current_quantity - transferRequestDTO.quantity);
+            ownedStockRepo.save(issuerOwnedStocks);
+        }
+
+        //Agrega acciones al usuario receptor
+        OwnedStock receptorOwnedStocks = getOwnedStockByUserAndTicker(receptorUser, transferRequestDTO.ticker);
+        if(receptorOwnedStocks == null){
+            System.out.println("Creating new OwnedStock for user: " + receptorUser.getUsername() + "ID"+ receptorUser.getId() + ", ticker: " + transferRequestDTO.ticker);
+            OwnedStock ownedStock = new OwnedStock();
+            ownedStock.setUser(receptorUser);
+            ownedStock.setTicker(transferRequestDTO.ticker);
+            ownedStock.setQuantity(transferRequestDTO.quantity);
+            ownedStock.setName(transferRequestDTO.name);
+            ownedStockRepo.save(ownedStock);
+        }
+        else{
+            System.out.println("Updating OwnedStock for user: " + receptorUser.getUsername() + ", ticker: "+ transferRequestDTO.ticker);
+            int receptor_current_quantity = receptorOwnedStocks.getQuantity();
+            receptorOwnedStocks.setQuantity(receptor_current_quantity + transferRequestDTO.quantity);
+            ownedStockRepo.save(receptorOwnedStocks);
+        }
     }
 
     public OwnedStock getOwnedStockByUserAndTicker(User user, String ticker){

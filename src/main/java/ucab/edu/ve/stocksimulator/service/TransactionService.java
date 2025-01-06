@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import ucab.edu.ve.stocksimulator.dto.TransactionDTO;
 import ucab.edu.ve.stocksimulator.dto.request.BuyRequestDTO;
 import ucab.edu.ve.stocksimulator.dto.request.SellRequestDTO;
+import ucab.edu.ve.stocksimulator.dto.request.TransferRequestDTO;
 import ucab.edu.ve.stocksimulator.model.Transaction;
 import ucab.edu.ve.stocksimulator.model.User;
 import ucab.edu.ve.stocksimulator.repository.TransactionRepo;
@@ -26,17 +27,19 @@ public class TransactionService {
         this.userRepo = userRepo;
     }
 
-    public List<TransactionDTO> findAllPurchase(String username){
+    //a
+    public List<TransactionDTO> findAllTransactions(String username){
         User user = userRepo.findByUsername(username);
-        List<Transaction> transactions = transactionRepo.findAllByIssuerAndType(user,"buy");
+        List<Transaction> transactions = transactionRepo.findAllByIssuer(user);
+        transactions.addAll(transactionRepo.findAllByReceptor(user));
         return mapListTransactionToDTO(transactions);
     }
 
-    public List<TransactionDTO> findAllSales(String username){
+   /*public List<TransactionDTO> findAllSales(String username){
         User user = userRepo.findByUsername(username);
         List<Transaction> transactions = transactionRepo.findAllByIssuerAndType(user,"sell");
         return mapListTransactionToDTO(transactions);
-    }
+    }*/
 
     public void registerPurchase(BuyRequestDTO buyRequestDTO){
         User user = userRepo.findByUsername(buyRequestDTO.username);
@@ -64,12 +67,20 @@ public class TransactionService {
         transactionRepo.save(transaction);
     }
 
-
-    public List<TransactionDTO> findAllTransfers(User user){
-        List<Transaction> transactions = transactionRepo.findAllByIssuerAndType(user, "transfer");
-        transactions.addAll(transactionRepo.findAllByReceptorAndType(user, "transfer"));
-        return mapListTransactionToDTO(transactions);
+    public void registerTransfer(TransferRequestDTO transferRequestDTO){
+        User issuerUser = userRepo.findByUsername(transferRequestDTO.issuerUsername);
+        User receptorUser = userRepo.findByUsername(transferRequestDTO.receptorUsername);
+        Transaction transaction = new Transaction();
+        transaction.setIssuer(issuerUser);
+        transaction.setQuantity(transferRequestDTO.quantity);
+        transaction.setReceptor(receptorUser);
+        transaction.setNameStock(transferRequestDTO.name);
+        transaction.setType("transfer");
+        transaction.setAmount(transferRequestDTO.amount);
+        transaction.setDate(LocalDate.now());
+        transactionRepo.save(transaction);
     }
+
 
     public Optional<Transaction> findStockById(Long id){
         return transactionRepo.findById(id);
