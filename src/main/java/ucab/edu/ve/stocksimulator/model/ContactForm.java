@@ -11,15 +11,15 @@ public class ContactForm {
     private Long id;
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
-    private User username;
+    private User user;
     private String textMessage;
 
     public ContactForm() {
     }
 
-    public ContactForm(Long id, User username, String textMessage) {
+    public ContactForm(Long id, User user, String textMessage) {
         this.id = id;
-        this.username = username;
+        this.user = user;
         this.textMessage = textMessage;
     }
 
@@ -31,12 +31,12 @@ public class ContactForm {
         this.id = id;
     }
 
-    public User getUsername() {
-        return username;
+    public User getUser() {
+        return user;
     }
 
-    public void setUsername(User username) {
-        this.username = username;
+    public void setUser(User user) {
+        this.user = user;
     }
 
     public String getTextMessage() {
