@@ -43,6 +43,12 @@ public class ContactFormService {
         contactFormRepo.delete(contactForm);
     }
 
+    public void deleteAllUserForms(String username){
+        User user = userRepo.findByUsername(username);
+        List<ContactForm> contactForms = contactFormRepo.findByUser(user);
+        contactFormRepo.deleteAll(contactForms);
+    }
+
     public ContactForm getFormByUserAndTextMesage(User user, String text){
         return contactFormRepo.findByUserAndTextMessage(user, text);
     }

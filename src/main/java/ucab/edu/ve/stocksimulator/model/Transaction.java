@@ -16,11 +16,11 @@ public class Transaction {
     private String nameStock;
     private String ticker;
     private String type;
-    @ManyToOne(cascade = CascadeType.REMOVE)
-    @JoinColumn(name = "issuer_id", nullable = false)
+    @ManyToOne
+    @JoinColumn(name = "issuer_id", nullable = true, updatable = true)
     private User issuer;
     @ManyToOne
-    @JoinColumn(name = "receptor_id", nullable = true)
+    @JoinColumn(name = "receptor_id", nullable = true, updatable = true)
     private User receptor;
     private Float amount;
     private int quantity;

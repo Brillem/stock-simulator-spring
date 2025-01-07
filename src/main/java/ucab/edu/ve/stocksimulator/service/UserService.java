@@ -33,6 +33,7 @@ public class UserService {
     @Transactional
     public void removeUser(String username) {
         User user = userRepo.findByUsername(username);
+
         userRepo.delete(user);
     }
 

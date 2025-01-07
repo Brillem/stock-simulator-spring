@@ -83,6 +83,21 @@ public class TransactionService {
         transactionRepo.save(transaction);
     }
 
+    public void deleteUserInTransactions(String username){
+        User user = userRepo.findByUsername(username);
+        List<Transaction> transactions = transactionRepo.findAllByIssuer(user);
+        transactions.addAll(transactionRepo.findAllByReceptor(user));
+        for(Transaction transaction : transactions){
+            if(transaction.getIssuer() == user){
+                transaction.setIssuer(null);
+            }
+            if(transaction.getReceptor() == user){
+                transaction.setReceptor(null);
+            }
+            transactionRepo.save(transaction);
+        }
+    }
+
     public void sendTransferEmail(TransferRequestDTO transferRequestDTO){
         String subject = "Transferencia recibida";
         String body = "Hola "+ transferRequestDTO.receptorUsername+" has recibido una transferecia de acciones de "+
@@ -100,11 +115,16 @@ public class TransactionService {
         TransactionDTO transactionDTO = new TransactionDTO();
         transactionDTO.stockTicker = transaction.getNameStock();
         transactionDTO.type = transaction.getType();
-        transactionDTO.issuerUsername= transaction.getIssuer().getUsername();
+        if(transaction.getIssuer()!=null){
+            transactionDTO.issuerUsername= transaction.getIssuer().getUsername();
+        }else{
+            transactionDTO.issuerUsername = null;
+        }
+
         if(transaction.getReceptor()!= null){
             transactionDTO.receptorUsername= transaction.getReceptor().getUsername();
         }else{
-            transactionDTO.receptorUsername= null;
+            transactionDTO.receptorUsername = null;
         }
         transactionDTO.amount = transaction.getAmount();
         transactionDTO.quantity = transaction.getQuantity();
