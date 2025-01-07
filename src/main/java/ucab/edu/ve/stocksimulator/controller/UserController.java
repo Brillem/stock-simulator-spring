@@ -10,7 +10,9 @@ import ucab.edu.ve.stocksimulator.dto.request.UserRequestDTO;
 import ucab.edu.ve.stocksimulator.dto.response.MessageResponseDTO;
 import ucab.edu.ve.stocksimulator.dto.response.UserResponseDTO;
 import ucab.edu.ve.stocksimulator.model.User;
+import ucab.edu.ve.stocksimulator.service.ContactFormService;
 import ucab.edu.ve.stocksimulator.service.EmailSenderService;
+import ucab.edu.ve.stocksimulator.service.TransactionService;
 import ucab.edu.ve.stocksimulator.service.UserService;
 import util.PasswordUtil;
 import java.util.List;
@@ -21,11 +23,15 @@ import java.util.List;
 public class UserController {
     private final UserService userService;
     private final EmailSenderService emailSenderService;
+    private final TransactionService transactionService;
+    private final ContactFormService contactFormService;
 
     @Autowired
-    public UserController(UserService userService, EmailSenderService emailSenderService) {
+    public UserController(UserService userService, EmailSenderService emailSenderService, TransactionService transactionService, ContactFormService contactFormService) {
         this.userService = userService;
         this.emailSenderService = emailSenderService;
+        this.transactionService = transactionService;
+        this.contactFormService = contactFormService;
     }
 
     @PostMapping(value= "/register", produces = "application/json")
@@ -127,6 +133,8 @@ public class UserController {
 
     @PostMapping("/delete")
     public ResponseEntity<MessageResponseDTO> removeUser(String username) {
+        transactionService.deleteUserInTransactions(username);
+        contactFormService.deleteAllUserForms(username);
         userService.removeUser(username);
         MessageResponseDTO message = new MessageResponseDTO(0, "User removed successfully");
         return ResponseEntity.status(HttpStatus.OK).body(message);

@@ -13,7 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
-public class ContactFormService {
+public class ContactFormService { //github reacciona dios mio
     private final ContactFormRepo contactFormRepo;
     private final UserRepo userRepo;
 
@@ -46,6 +46,11 @@ public class ContactFormService {
         return contactFormRepo.findById(id).orElse(null);
     }
 
+    public void deleteAllUserForms(String username){
+        User user = userRepo.findByUsername(username);
+        List<ContactForm> contactForms = contactFormRepo.findByUser(user);
+        contactFormRepo.deleteAll(contactForms);
+    }
 
     public List<ContactFormDTO> mapContactFormListToContactFormDTOList(List<ContactForm> contactForm){
         List<ContactFormDTO> contactFormDTOList = new ArrayList<>();

@@ -53,6 +53,7 @@ public class OwnedStockService {
     public void sellStock(SellRequestDTO sellRequestDTO){
         User user = userRepo.findByUsername(sellRequestDTO.username);
         OwnedStock ownedstock = getOwnedStockByUserAndTicker(user, sellRequestDTO.ticker);
+        System.out.println("Borrando las accion: "+ownedstock.getTicker()+" con el id "+ ownedstock.getId()+" y el id de USUARIO "+ownedstock.getUser().getId());
         int current_quantity = ownedstock.getQuantity();
         if (current_quantity - sellRequestDTO.quantity <= 0) {
             ownedStockRepo.delete(ownedstock);
