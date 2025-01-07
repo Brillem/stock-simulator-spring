@@ -3,6 +3,7 @@ package ucab.edu.ve.stocksimulator.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ucab.edu.ve.stocksimulator.dto.ContactFormDTO;
+import ucab.edu.ve.stocksimulator.dto.request.ContactFormRequestDTO;
 import ucab.edu.ve.stocksimulator.model.ContactForm;
 import ucab.edu.ve.stocksimulator.model.User;
 import ucab.edu.ve.stocksimulator.repository.ContactFormRepo;
@@ -30,22 +31,17 @@ public class ContactFormService {
         return mapContactFormListToContactFormDTOList(contactFormRepo.findByUser(this.userRepo.findByUsername(username)));
     }
 
-    public void addForm(ContactFormDTO contactFormDTO) {
+    public void addForm(ContactFormRequestDTO contactFormDTO) {
         ContactForm contactForm = new ContactForm();
         contactForm.setUser(userRepo.findByUsername(contactFormDTO.username));
         contactForm.setTextMessage(contactFormDTO.textMessage);
         contactFormRepo.save(contactForm);
     }
 
-    public void deleteForm(ContactFormDTO contactFormDTO) {
-        User user = userRepo.findByUsername(contactFormDTO.username);
-        ContactForm contactForm = getFormByUserAndTextMesage(user, contactFormDTO.textMessage);
-        contactFormRepo.delete(contactForm);
+    public void deleteForm(Long id) {
+        contactFormRepo.deleteById(id);
     }
 
-    public ContactForm getFormByUserAndTextMesage(User user, String text){
-        return contactFormRepo.findByUserAndTextMessage(user, text);
-    }
 
     public List<ContactFormDTO> mapContactFormListToContactFormDTOList(List<ContactForm> contactForm){
         List<ContactFormDTO> contactFormDTOList = new ArrayList<>();

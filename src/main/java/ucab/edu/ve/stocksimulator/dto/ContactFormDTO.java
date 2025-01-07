@@ -5,11 +5,16 @@ public class ContactFormDTO {
     public String username;
     public String textMessage;
 
-    public ContactFormDTO() {
+    public void setId(Long id) {
+        this.id = id;
     }
 
-    public ContactFormDTO(String username, String textMessage) {
+    public void setUsername(String username) {
         this.username = username;
+    }
+
+    public void setTextMessage(String textMessage) {
         this.textMessage = textMessage;
     }
 }
+
