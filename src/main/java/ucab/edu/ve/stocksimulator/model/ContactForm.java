@@ -3,11 +3,12 @@ package ucab.edu.ve.stocksimulator.model;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name = "contactForms")
+@Table(name = "contactforms")
 
 public class ContactForm {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(unique = true, nullable = false, updatable = false)
     private Long id;
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
