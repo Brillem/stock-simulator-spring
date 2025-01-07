@@ -13,10 +13,7 @@ import ucab.edu.ve.stocksimulator.dto.request.TransferRequestDTO;
 import ucab.edu.ve.stocksimulator.dto.response.MessageResponseDTO;
 import ucab.edu.ve.stocksimulator.model.Transaction;
 import ucab.edu.ve.stocksimulator.model.User;
-import ucab.edu.ve.stocksimulator.service.OwnedStockService;
-import ucab.edu.ve.stocksimulator.service.StockEODService;
-import ucab.edu.ve.stocksimulator.service.StockService;
-import ucab.edu.ve.stocksimulator.service.TransactionService;
+import ucab.edu.ve.stocksimulator.service.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,8 +25,9 @@ public class TransactionController {
     public OwnedStockService ownedStockService;
     public StockEODService  stockEODService;
 
+
     @Autowired
-    public TransactionController(TransactionService transactionService, OwnedStockService ownedStockService,StockEODService stockEODService) {
+    public TransactionController(TransactionService transactionService, OwnedStockService ownedStockService, StockEODService stockEODService) {
         this.transactionService = transactionService;
         this.ownedStockService = ownedStockService;
         this.stockEODService = stockEODService;
@@ -84,6 +82,7 @@ public class TransactionController {
         MessageResponseDTO messageResponseDTO = new MessageResponseDTO();
         ownedStockService.transferStock(transferRequestDTO);
         transactionService.registerTransfer(transferRequestDTO);
+        transactionService.sendTransferEmail(transferRequestDTO);
         messageResponseDTO.setCode(0);
         messageResponseDTO.setMessage("Transfer completed successfully");
         return ResponseEntity.status(HttpStatus.OK).body(messageResponseDTO);

@@ -20,11 +20,13 @@ import java.util.Optional;
 public class TransactionService {
     private final TransactionRepo transactionRepo;
     private final UserRepo userRepo;
+    private final EmailSenderService emailSenderService;
 
     @Autowired
-    public TransactionService(TransactionRepo transactionRepo, UserRepo userRepo) {
+    public TransactionService(TransactionRepo transactionRepo, UserRepo userRepo, EmailSenderService emailSenderService) {
         this.transactionRepo = transactionRepo;
         this.userRepo = userRepo;
+        this.emailSenderService = emailSenderService;
     }
 
     //a
@@ -81,6 +83,14 @@ public class TransactionService {
         transactionRepo.save(transaction);
     }
 
+    public void sendTransferEmail(TransferRequestDTO transferRequestDTO){
+        String subject = "Transferencia recibida";
+        String body = "Hola "+ transferRequestDTO.receptorUsername+" has recibido una transferecia de acciones de "+
+                transferRequestDTO.name+" por parte de "+transferRequestDTO.issuerUsername +". Se trata de un total de "+
+                transferRequestDTO.quantity+" acciones, con un valor combinado de "+transferRequestDTO.amount+"$.";
+        String email = userRepo.findByUsername(transferRequestDTO.receptorUsername).getEmail();
+        this.emailSenderService.sendEmail(email, subject, body);
+    }
 
     public Optional<Transaction> findStockById(Long id){
         return transactionRepo.findById(id);

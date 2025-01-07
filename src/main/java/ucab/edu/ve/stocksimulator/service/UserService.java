@@ -1,4 +1,5 @@
 package ucab.edu.ve.stocksimulator.service;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -29,7 +30,11 @@ public class UserService {
 
     public User updateUser(User user) { return userRepo.save(user); }
 
-    public User removeUser(String username) { return userRepo.removeByUsername(username); }
+    @Transactional
+    public void removeUser(String username) {
+        User user = userRepo.findByUsername(username);
+        userRepo.delete(user);
+    }
 
     public User findUserByUsername(String username) {
         return userRepo.findByUsername(username);
