@@ -1,6 +1,7 @@
 package ucab.edu.ve.stocksimulator.dto;
 
 public class ContactFormDTO {
+    public Long id;
     public String username;
     public String textMessage;
 

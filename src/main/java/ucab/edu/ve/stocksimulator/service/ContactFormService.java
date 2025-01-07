@@ -60,6 +60,7 @@ public class ContactFormService {
 
     public ContactFormDTO mapContacttoDTO(ContactForm contact){
         ContactFormDTO contactDTO = new ContactFormDTO();
+        contactDTO.id = contact.getId();
         contactDTO.username = contact.getUser().getUsername();
         contactDTO.textMessage = contact.getTextMessage();
         return contactDTO;
