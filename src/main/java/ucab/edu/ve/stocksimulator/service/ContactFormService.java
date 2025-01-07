@@ -42,6 +42,10 @@ public class ContactFormService {
         contactFormRepo.deleteById(id);
     }
 
+    public ContactForm getForm(Long id) {
+        return contactFormRepo.findById(id).orElse(null);
+    }
+
 
     public List<ContactFormDTO> mapContactFormListToContactFormDTOList(List<ContactForm> contactForm){
         List<ContactFormDTO> contactFormDTOList = new ArrayList<>();

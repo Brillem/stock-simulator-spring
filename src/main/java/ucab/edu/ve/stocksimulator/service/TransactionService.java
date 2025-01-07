@@ -84,8 +84,8 @@ public class TransactionService {
     }
 
     public void sendTransferEmail(TransferRequestDTO transferRequestDTO){
-        String subject = "Transferencia recibida";
-        String body = "Hola "+ transferRequestDTO.receptorUsername+" has recibido una transferecia de acciones de "+
+        String subject = "Transferencia recibida | Stock Simulator";
+        String body = transferRequestDTO.receptorUsername+", has recibido una transferecia de acciones de "+
                 transferRequestDTO.name+" por parte de "+transferRequestDTO.issuerUsername +". Se trata de un total de "+
                 transferRequestDTO.quantity+" acciones, con un valor combinado de "+transferRequestDTO.amount+"$.";
         String email = userRepo.findByUsername(transferRequestDTO.receptorUsername).getEmail();
